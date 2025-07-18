@@ -1,6 +1,8 @@
-﻿public enum JudgementType
+﻿
+// 판정 결과 타입
+public enum JudgementType
 {
-    NoJudge,
+    NoJudge, // 판정 x
     Miss,
     Bad,
     Good,
