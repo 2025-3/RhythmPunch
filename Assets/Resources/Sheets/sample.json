@@ -1,11 +1,11 @@
 {
   "notes":
   [
-    { "time": 0.1, "noteType": "Attack" },
-    { "time": 0.2, "noteType": "Attack" },
-    { "time": 0.3, "noteType": "Attack" },
-    { "time": 0.5, "noteType": "Guard"  },
-    { "time": 0.6, "noteType": "Guard"  },
-    { "time": 0.7, "noteType": "Guard"  }
+    { "time": 1, "noteType": "Attack" },
+    { "time": 2, "noteType": "Attack" },
+    { "time": 3, "noteType": "Attack" },
+    { "time": 5, "noteType": "Guard"  },
+    { "time": 6, "noteType": "Guard"  },
+    { "time": 7, "noteType": "Guard"  }
   ]
 }
