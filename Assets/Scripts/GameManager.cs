@@ -1,26 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using Sheets;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance; // ì‹±ê¸€í†¤
+
+    private NoteType _mode; // ê³µê²©ëª¨ë“œ ë°©ì–´ëª¨ë“œ ì •ë³´
+    private int _nowModeCount = 0; // í˜„ì¬ ëª¨ë“œì˜ ëª‡ë²ˆì§¸ì¸ì§€
+    private int _nowModeLength = 1; // í˜„ì¬ ëª¨ë“œ ê°œìˆ˜
     
-    public static GameManager Instance;
+    private bool _isPlaying = false; // í”Œë ˆì‰ì¤‘ì¸ì§€
+    private int _noteIndex = 0; // í˜„ì¬ íŒì •í•  ë…¸íŠ¸ ì¸ë±ìŠ¤
+    private float _startTime; // ì‹œì‘ëœ íƒ€ì„ìŠ¤íƒ¬í”„
+    private float CurrentTime => Time.time - _startTime; // íƒ€ì„ìŠ¤íƒ¬í”„ ê¸°ë°˜ ì‹œì‘ëœì§€ ëª‡ì´ˆì§€ë‚¬ëŠ”ì§€
+    
+    public Sheet sheet; // ì•…ë³´ì •ë³´
 
-    public NoteType mode;
+    private readonly Queue<MoveType> _commandList = new(); // ê³µê²©ëª¨ë“œë•Œ ìŒ“ì¸ ì»¤ë§¨ë“œ ë¦¬ìŠ¤íŠ¸
 
-    public int count = 3;
-
-    public Sheet sheet;
-
-    public JudgementType currentInputJudge;
-
-    public List<Note> commandList;
-
-
-    public float currentTime;
-
+    public UnityEvent onStartGame; // ê²Œì„ ì‹œì‘ ì‹œ ë°œìƒ
+    public UnityEvent onEndGame; // ê²Œì„ ì¢…ë£Œ ì‹œ ë°œìƒ
+    public UnityEvent<int> onNoteDestroyed; // ë…¸íŠ¸ íŒŒê´´ (ì‹œê°„ì´ˆê³¼ or íŒì •) ì‹œ ë°œìƒ
+    
     private void Awake()
     {
         if (Instance == null)
@@ -32,117 +35,124 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
     }
-    void Start()
+    
+    private void Start()
     {
-        currentTime = 0;
-        ChangeMode(NoteType.Attack);
+        StartGame(); // ì ì ˆí•œ ìœ„ì¹˜ë¡œ ì˜®ê²¨ì•¼í•¨ (uië¼ë˜ê°€ onLoadë¼ë˜ê°€ ë“±ë“±)
     }
-
-    int index = 0;
 
     private void Update()
     {
-
-        currentTime += Time.deltaTime;
-
-        if (index >= sheet.sheetData.notes.Length) return;
-
-        MissJudge(); // ÇöÀç ³ëÆ®ÀÇ ÆÇÁ¤ À¯È¿ ½Ã°£ÀÌ Áö³µ´Ù¸é (Miss Ã³¸®)
-
-       
-
+        if (_isPlaying)
+        {
+            if (_noteIndex >= sheet.sheetData.notes.Length)
+            {
+                EndGame();
+                return;
+            }
+            
+            MissJudge(); // í˜„ì¬ ë…¸íŠ¸ì˜ íŒì • ìœ íš¨ ì‹œê°„ì´ ì§€ë‚¬ë‹¤ë©´ (Miss ì²˜ë¦¬)
+        }
     }
 
-    public void MissJudge()
+    public void StartGame()
     {
-        // ÇöÀç ³ëÆ®ÀÇ ÆÇÁ¤ À¯È¿ ½Ã°£ÀÌ Áö³µ´Ù¸é (Miss Ã³¸®)
-        if (sheet.sheetData.notes[index].time + 0.5f < currentTime)
-        {
-            nextNode();
+        _isPlaying = true;
+        _startTime = Time.time;
+        ChangeMode(sheet.sheetData.notes[0].noteType);
+        onStartGame?.Invoke();
+    }
 
-            if (mode == NoteType.Attack)
+    public void EndGame()
+    {
+        _isPlaying = false;
+        onEndGame?.Invoke();
+    }
+
+    private void MissJudge()
+    {
+        // í˜„ì¬ ë…¸íŠ¸ì˜ íŒì • ìœ íš¨ ì‹œê°„ì´ ì§€ë‚¬ë‹¤ë©´ (Miss ì²˜ë¦¬)
+        if (sheet.sheetData.notes[_noteIndex].time + 0.5f < CurrentTime)
+        {
+            if (_mode == NoteType.Attack)
             {
-                // °ø°İ ¸ğµå: Miss »óÈ²ÀÌ¹Ç·Î °­Á¦·Î ºó ³ëÆ®¸¦ ¸¸µé¾î ±â·Ï
-                Note note = new Note();
-                note.type = (Note.Type)Random.Range(0, 3); // ·£´ı Å¸ÀÔ (A, B, C µî)
-                note.data = new NoteData();
-                note.data.time = currentTime;
-                note.data.noteType = GameManager.Instance.mode;
-                commandList.Add(note); // ÇÃ·¹ÀÌ¾î ÀÔ·Â ¸ñ·Ï¿¡ Ãß°¡
+                // ê³µê²© ëª¨ë“œ: Miss ìƒí™©ì´ë¯€ë¡œ ê°•ì œë¡œ ë¹ˆ ë…¸íŠ¸ë¥¼ ë§Œë“¤ì–´ ê¸°ë¡
+                _commandList.Enqueue((MoveType)Random.Range(0, 3)); // í”Œë ˆì´ì–´ ì…ë ¥ ëª©ë¡ì— ëœë¤ê°’ ì¶”ê°€
             }
             else
             {
-                // ¹æ¾î ¸ğµå: ÀÔ·ÂÇÏÁö ¸øÇÑ °ø°İÀ» Á¦°Å
-                if (commandList.Count < 1) return;
-                Debug.Log("¹æ¾î Miss");
-                commandList.RemoveAt(0);
+                // ë°©ì–´ ëª¨ë“œ: ì…ë ¥í•˜ì§€ ëª»í•œ ê³µê²©ì„ ì œê±°
+                Debug.Log("ë°©ì–´ Miss");
+                _commandList.Dequeue();
             }
+            NextNode();
         }
     }
-    public void Judge(Note note)
+    
+    public void Judge(NoteForJudge note)
     {
-        currentInputJudge = JudgementType.NoJudge;
+        var noteRealTime = note.Time - _startTime;
+        JudgementType currentInputJudge;
 
-        // °ø°İ ¸ğµå ÆÇÁ¤
-        if (mode == NoteType.Attack)
+        if (_mode == NoteType.Attack) // ê³µê²© ëª¨ë“œ íŒì •
         {
-            currentInputJudge = sheet.Judge(index, note.data.time);
+            currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
 
-            //°ø°İ Å¸ÀÌ¹ÖÀÌ ÀÏÄ¡ÇÏ¸é
+            if (currentInputJudge != JudgementType.NoJudge) // ê³µê²© íƒ€ì´ë°ì´ ì¼ì¹˜í•˜ë©´
+            {
+                Debug.Log(currentInputJudge);
+                _commandList.Enqueue(note.Type);  // ì…ë ¥ ê¸°ì–µí•˜ê¸°
+                NextNode();
+                
+                //HP ì†Œëª¨
+            }
+        }
+        else // ë°©ì–´ ëª¨ë“œ ì¼ì‹œ
+        {
+            currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
             if (currentInputJudge != JudgementType.NoJudge)
             {
-                nextNode();
-                commandList.Add(note);  //ÀÔ·Â ±â¾ïÇÏ±â)
-
-                //HP ¼Ò¸ğ
+                Debug.Log(_commandList.Peek());
+                // ì…ë ¥í•œ ë…¸íŠ¸ê°€ ê¸°ë¡ëœ ê³µê²©ê³¼ ë‹¤ë¥´ë©´ ì‹¤íŒ¨ì²˜ë¦¬          
+                if (note.Type != _commandList.Peek())
+                    currentInputJudge = JudgementType.Fail;
+                
+                Debug.Log(currentInputJudge);
+                
+                _commandList.Dequeue(); // ë°©ì–´ì— ì„±ê³µí–ˆìœ¼ë¯€ë¡œ ì œê±°
+                NextNode();
             }
-        }
-
-        //¹æ¾î ¸ğµå ÀÏ½Ã
-        else
-        {
-            //±âÁ¸ ÀÔ·Â µ¥ÀÌÅÍ°¡ ¾øÀ»¶§
-            if (commandList.Count < 1) return;
-
-            // ÀÔ·ÂÇÑ ³ëÆ®°¡ ±â·ÏµÈ °ø°İ°ú ´Ù¸£¸é ¹«½Ã           
-            if (note.type != commandList[0].type) return;
-
-
-            currentInputJudge = sheet.Judge(index, note.data.time);
-
-            if (currentInputJudge != JudgementType.NoJudge)
-            {
-                nextNode();
-                commandList.Remove(commandList[0]); // ¹æ¾î¿¡ ¼º°øÇßÀ¸¹Ç·Î Á¦°Å
-
-            }
-
-        }
-
-    }
-
-    public void nextNode()
-    {
-        Debug.Log(index + " : " + currentInputJudge);
-
-        index++;
-
-        if(index > 2 && mode == NoteType.Attack)
-        {
-            ChangeMode(NoteType.Guard);
         }
     }
 
-    public void ChangeMode(NoteType n)
+    private void NextNode()
     {
-        mode = n;
-        Debug.Log("Mode" + mode);
-        if (mode == NoteType.Attack)
+        onNoteDestroyed?.Invoke(_noteIndex);
+        
+        _noteIndex++;
+        _nowModeCount++;
+        
+        if (_nowModeCount >= _nowModeLength)
+            ChangeMode(_mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
+    }
+
+    private void ChangeMode(NoteType n)
+    {
+        _mode = n;
+
+        _nowModeCount = 0;
+        _nowModeLength = 0;
+        while (_noteIndex + _nowModeLength < sheet.sheetData.notes.Length &&
+               _mode == sheet.sheetData.notes[_noteIndex + _nowModeLength].noteType)
         {
-            commandList = new List<Note>();
+            _nowModeLength++;
         }
-        else
+
+        Debug.Log("Mode" + _mode);
+        
+        if (_mode == NoteType.Attack)
         {
+            _commandList.Clear();
         }
     }
 }

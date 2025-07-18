@@ -1,73 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputProcessor : MonoBehaviour
 {
+    public static InputProcessor Instance;
 
-    public int count = 3;
-
-    public static InputProcessor instance;
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         else
         {
             Destroy(this);
         }
     }
 
-    private void Start()
-    {
-    }
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            //³λΖ® Α¤ΊΈ ΐϊΐε
-            Note note = new Note();
-            note.type = Note.Type.top;
-            note.data = new NoteData();
-            note.data.time = Time.time;
-            note.data.noteType = GameManager.Instance.mode;
+            // λ…ΈνΈ μ •λ³΄ μ €μ¥
+            var note = new NoteForJudge
+            {
+                Time = Time.time,
+                Type = MoveType.High,
+            };
 
-            //°ΤΐΣ ΈΕ΄Οΐϊ ΖΗ΄ά
+            // κ²μ„λ§¤λ‹μ €μ—μ„ νμ •
             GameManager.Instance.Judge(note);
-         
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            Note note = new Note();
-            note.type = Note.Type.middle;
-            note.data = new NoteData();
-            note.data.time = Time.time;
-            note.data.noteType = GameManager.Instance.mode;
-
-
+            // λ…ΈνΈ μ •λ³΄ μ €μ¥
+            var note = new NoteForJudge
+            {
+                Time = Time.time,
+                Type = MoveType.Middle,
+            };
+            
             GameManager.Instance.Judge(note);
-
         }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Note note = new Note();
-            note.type = Note.Type.bottom;
-            note.data = new NoteData();
-            note.data.time = Time.time;
-            note.data.noteType = GameManager.Instance.mode;
+            // λ…ΈνΈ μ •λ³΄ μ €μ¥
+            var note = new NoteForJudge
+            {
+                Time = Time.time,
+                Type = MoveType.Low,
+            };
 
             GameManager.Instance.Judge(note);
-
         }
-        
     }
-}
-
-public class Note
-{
-    public NoteData data;
-    public enum Type { top, middle, bottom, NaN }
-    public Type type;
 }
