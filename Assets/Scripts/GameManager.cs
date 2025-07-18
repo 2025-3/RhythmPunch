@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
 
     public List<Note> commandList;
 
+
+    public float currentTime;
+
     private void Awake()
     {
         if (Instance == null)
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        currentTime = 0;
         ChangeMode(NoteType.Attack);
     }
 
@@ -38,10 +42,21 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (index > 5) return; 
 
+        currentTime += Time.deltaTime;
+
+        if (index >= sheet.sheetData.notes.Length) return;
+
+        MissJudge(); // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
+
+       
+
+    }
+
+    public void MissJudge()
+    {
         // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
-        if (sheet.sheetData.notes[index].time + 0.5f < Time.time)
+        if (sheet.sheetData.notes[index].time + 0.5f < currentTime)
         {
             nextNode();
 
@@ -51,7 +66,7 @@ public class GameManager : MonoBehaviour
                 Note note = new Note();
                 note.type = (Note.Type)Random.Range(0, 3); // 랜덤 타입 (A, B, C 등)
                 note.data = new NoteData();
-                note.data.time = Time.time;
+                note.data.time = currentTime;
                 note.data.noteType = GameManager.Instance.mode;
                 commandList.Add(note); // 플레이어 입력 목록에 추가
             }
@@ -64,10 +79,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    /// <summary>
-    /// 플레이어가 노트를 입력했을 때 호출
-    /// </summary>
-    /// <param name="note">플레이어 입력 노트</param>
     public void Judge(Note note)
     {
         currentInputJudge = JudgementType.NoJudge;
