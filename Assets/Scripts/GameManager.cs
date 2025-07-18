@@ -43,10 +43,11 @@ public class GameManager : MonoBehaviour
         // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
         if (sheet.sheetData.notes[index].time + 0.5f < Time.time)
         {
+            nextNode();
+
             if (mode == NoteType.Attack)
             {
                 // 공격 모드: Miss 상황이므로 강제로 빈 노트를 만들어 기록
-                nextNode();
                 Note note = new Note();
                 note.type = (Note.Type)Random.Range(0, 3); // 랜덤 타입 (A, B, C 등)
                 note.data = new NoteData();
