@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent<int, JudgementType, NoteForJudge> onNoteDestroyedWithNote;
     public UnityEvent<MoveType> onComboAdded;
     public UnityEvent onCounterChanged;
+    public UnityEvent onCounterAttacked;
 
     public int MaxHp { get; private set; } = 3;
     public int NowHp { get; private set; }
@@ -165,7 +166,7 @@ public class GameManager : MonoBehaviour
                 // 여기서 카운터 처리 필요
                 if (CheckCounterList(note))
                 {
-                    
+                    onCounterAttacked?.Invoke();
                 }
                 
                 CommandList.Dequeue(); // 방어에 성공했으므로 제거
