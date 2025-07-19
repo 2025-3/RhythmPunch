@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
     public UnityEvent<int, JudgementType, NoteForJudge> onNoteDestroyedWithNote;
     public UnityEvent<MoveType> onComboAdded;
     public UnityEvent onCounterChanged;
+
+    public int MaxHp { get; private set; } = 3;
+    public int NowHp { get; private set; }
     
     private void Awake()
     {
@@ -77,6 +80,11 @@ public class GameManager : MonoBehaviour
     {
         if (_isPlaying)
         {
+            if (NowHp <= 0)
+            {
+                EndGame();
+            }
+            
             if (_noteIndex >= sheets[SheetIndex].sheetData.notes.Length)
             {
                 ChangeSheet();
@@ -90,6 +98,7 @@ public class GameManager : MonoBehaviour
     {
         _isPlaying = true;
         _startTime = Time.time;
+        NowHp = MaxHp;
         ChangeMode(sheets[0].sheetData.notes[0].noteType);
         onStartGame?.Invoke();
         SoundManager.Instance.PlayBGM(0, true);
@@ -116,7 +125,6 @@ public class GameManager : MonoBehaviour
             else
             {
                 // 방어 모드: 입력하지 못한 공격을 제거
-                Debug.Log("방어 Miss");
                 CommandList.Dequeue();
             }
             
@@ -135,7 +143,6 @@ public class GameManager : MonoBehaviour
 
             if (currentInputJudge != JudgementType.NoJudge) // 공격 타이밍이 일치하면
             {
-                Debug.Log(currentInputJudge);
                 CommandList.Enqueue(note.Type);  // 입력 기억하기
                 onComboAdded?.Invoke(note.Type);
                 
@@ -150,7 +157,6 @@ public class GameManager : MonoBehaviour
             var currentInputJudge = sheets[SheetIndex].Judge(_noteIndex, noteRealTime);
             if (currentInputJudge != JudgementType.NoJudge)
             {
-                Debug.Log(CommandList.Peek());
                 // 입력한 노트가 기록된 공격과 다르면 실패처리          
                 if (note.Type != CommandList.Peek())
                     currentInputJudge = JudgementType.Fail;
@@ -160,8 +166,6 @@ public class GameManager : MonoBehaviour
                 {
                     
                 }
-                
-                Debug.Log(currentInputJudge);
                 
                 CommandList.Dequeue(); // 방어에 성공했으므로 제거
                 
@@ -175,6 +179,9 @@ public class GameManager : MonoBehaviour
     {
         onNoteDestroyed?.Invoke(_noteIndex, reason);
 
+        if (reason is JudgementType.Bad or JudgementType.Fail or JudgementType.Miss)
+            NowHp--;
+        
         if (reason is JudgementType.Perfect or JudgementType.Great or JudgementType.Good)
         {
             ComboCount++;
@@ -190,7 +197,8 @@ public class GameManager : MonoBehaviour
         if (NowModeCount >= NowModeLength)
             ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
         
-        Debug.Log(_noteIndex);
+        
+        Debug.Log($"Sheet {SheetIndex} {_noteIndex}");
     }
 
     private void ChangeMode(NoteType n)
@@ -204,12 +212,20 @@ public class GameManager : MonoBehaviour
         {
             NowModeLength++;
         }
-
-        Debug.Log("Mode" + Mode);
         
         if (Mode == NoteType.Attack)
         {
             CommandList.Clear();
+
+            foreach (var (_, _, isUsed) in CounterList)
+            {
+                if (!isUsed)
+                {
+                    NowHp--;
+                    break;
+                }
+            }
+            
             GenerateCounterList();
         }
     }
@@ -223,9 +239,6 @@ public class GameManager : MonoBehaviour
         {
             CounterList.Add((item, (MoveType)Random.Range(0, 3), false));
         }
-        
-        foreach (var item in CounterList)
-            Debug.Log(string.Join("", item.directions) + ": " + item.moveType);
 
         onCounterChanged?.Invoke();
     }
@@ -240,7 +253,7 @@ public class GameManager : MonoBehaviour
                 bool isSame = true;
                 for (int j = 0; j < directionList.Count; j++)
                 {
-                    if (directionList[i] != note.Directions[^(j+1)])
+                    if (directionList[j] != note.Directions[^(directionList.Count - j)])
                     {
                         isSame = false;
                         break;
@@ -261,7 +274,6 @@ public class GameManager : MonoBehaviour
     private void ChangeSheet()
     {
         SheetIndex++;
-        Debug.Log($"Sheet {SheetIndex}");
         if (SheetIndex >= sheets.Count)
         {
             EndGame();

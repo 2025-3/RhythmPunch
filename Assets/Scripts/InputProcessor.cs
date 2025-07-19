@@ -11,7 +11,7 @@ public class InputProcessor : MonoBehaviour
 
     private readonly List<DirectionType> _directions = new();
 
-    private readonly float _resetTime = 0.1f;
+    private readonly float _resetTime = 0.2f;
 
     private void Awake()
     {
@@ -31,31 +31,31 @@ public class InputProcessor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             _directions.Add(DirectionType.Up);
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
             StartCoroutine(ResetDeque());
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             _directions.Add(DirectionType.Down);
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
             StartCoroutine(ResetDeque());
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             _directions.Add(DirectionType.Left);
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
             StartCoroutine(ResetDeque());
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             _directions.Add(DirectionType.Right);
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
             StartCoroutine(ResetDeque());
         }
         
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
 
             currentInput = MoveType.High;
             // 노트 정보 저장
@@ -72,7 +72,7 @@ public class InputProcessor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
 
             currentInput = MoveType.Middle;
 
@@ -89,7 +89,7 @@ public class InputProcessor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            StopCoroutine(ResetDeque());
+            StopAllCoroutines();
 
             currentInput = MoveType.Low;
 
