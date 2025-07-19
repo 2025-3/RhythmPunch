@@ -53,7 +53,7 @@ namespace ObjectControls
                     var go = Instantiate(note, initPos, Quaternion.identity);
                     go.gameObject.SetActive(false);
                     _noteQueue.Enqueue(go);
-                    if (sheets[0].sheetData.notes[i].noteType == NoteType.Guard)
+                    if (sheet.sheetData.notes[i].noteType == NoteType.Guard)
                     {
                         go.GetComponent<SpriteRenderer>().sprite = guardSprite;
                         _guardNotes.Enqueue(go.gameObject);

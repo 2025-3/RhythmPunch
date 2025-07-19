@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sheets;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
     public readonly Queue<MoveType> CommandList = new(); // 공격모드때 쌓인 커맨드 리스트
     public readonly CounterList CounterList = new(); // 방어모드때 해야할 카운터 리스트
     private GenerateCounterListsStrategy _counterGenerator;
+
+    public int ComboCount { get; private set; } = 0;
     
     public UnityEvent onStartGame; // 게임 시작 시 발생
     public UnityEvent onEndGame; // 게임 종료 시 발생
@@ -61,7 +64,13 @@ public class GameManager : MonoBehaviour
             6 => new Stage6()
         };
         
-        StartGame(); // 적절한 위치로 옮겨야함 (ui라던가 onLoad라던가 등등)
+        StartCoroutine(DelayedStart()); // 적절한 위치로 옮겨야함 (ui라던가 onLoad라던가 등등)
+    }
+
+    private IEnumerator DelayedStart()
+    {
+        yield return new WaitForSeconds(3.0f);
+        StartGame();
     }
 
     private void Update()
@@ -165,12 +174,23 @@ public class GameManager : MonoBehaviour
     private void NextNode(JudgementType reason)
     {
         onNoteDestroyed?.Invoke(_noteIndex, reason);
+
+        if (reason is JudgementType.Perfect or JudgementType.Great or JudgementType.Good)
+        {
+            ComboCount++;
+        }
+        else
+        {
+            ComboCount = 0;
+        }
         
         _noteIndex++;
         NowModeCount++;
         
         if (NowModeCount >= NowModeLength)
             ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
+        
+        Debug.Log(_noteIndex);
     }
 
     private void ChangeMode(NoteType n)
@@ -214,7 +234,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < CounterList.Count; i++)
         {
-            var (directionList, moveType, isUsed) =  CounterList[i];
+            var (directionList, moveType, isUsed) = CounterList[i];
             if (!isUsed && note.Type == moveType && note.Directions.Count >= directionList.Count)
             {
                 bool isSame = true;
@@ -241,6 +261,7 @@ public class GameManager : MonoBehaviour
     private void ChangeSheet()
     {
         SheetIndex++;
+        Debug.Log($"Sheet {SheetIndex}");
         if (SheetIndex >= sheets.Count)
         {
             EndGame();

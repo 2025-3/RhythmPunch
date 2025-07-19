@@ -35,6 +35,7 @@ public class CounterBoxControl : MonoBehaviour
     {
         GameManager.Instance.onCounterChanged.AddListener(Draw);
         StartCoroutine(PlayAnimation());
+        Draw();
     }
 
     // Update is called once per frame

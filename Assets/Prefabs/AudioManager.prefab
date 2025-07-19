@@ -315,6 +315,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8300000, guid: 65806161e82c4cb41b1696e905b06f9c, type: 3}
   - {fileID: 8300000, guid: 805fbbd84b71f524184835d312a60a99, type: 3}
+  - {fileID: 0}
   - {fileID: 8300000, guid: df187f8337826c447b9cc18ef4bc0530, type: 3}
   sfxClips: []
 --- !u!1 &8351575211292261542

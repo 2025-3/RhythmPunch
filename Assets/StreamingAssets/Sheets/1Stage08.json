@@ -1,0 +1,12 @@
+{
+  "level": 0,
+  "reachingTime": 2.0,
+  "notes":
+  [
+   
+    { "time": 62, "noteType": 0 },
+    { "time": 62.3, "noteType": 0 },
+    { "time": 62.5, "noteType": 1 },
+    { "time": 62.8, "noteType": 1 }
+  ]
+}

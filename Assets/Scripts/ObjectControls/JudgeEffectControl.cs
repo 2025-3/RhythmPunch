@@ -38,7 +38,8 @@ public class JudgeEffectControl : MonoBehaviour
             JudgementType.Great => great,
             JudgementType.Good => good,
             JudgementType.Bad => bad,
-            JudgementType.Miss => miss
+            JudgementType.Miss => miss,
+            JudgementType.Fail => miss
         };
     }
 
