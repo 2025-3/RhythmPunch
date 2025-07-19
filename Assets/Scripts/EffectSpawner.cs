@@ -6,12 +6,13 @@ public class EffectSpawner : MonoBehaviour
 {
     public static EffectSpawner Instance;
 
-    public GameObject missEffect;
-    public GameObject badEffect;
-    public GameObject goodEffect;
-    public GameObject perfectEffect;
+    public List<GameObject> effects;
 
-    public GameObject spawnPoint;
+    public GameObject highSpawnPoint;
+    public GameObject middleSpawnPoint;
+    public GameObject lowSpawnPoint;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -26,22 +27,27 @@ public class EffectSpawner : MonoBehaviour
 
     private void Start()
     {
-        if (spawnPoint == null) spawnPoint = new GameObject();
         
     }
-    public void SpawnEffect(JudgementType judgementType)
+    public void SpawnEffect(MoveType Type)
     {
-        GameObject v;
+        if (Type == MoveType.High) 
+        {
+            Instantiate(effects[0], highSpawnPoint.transform);
 
-        if (judgementType == JudgementType.Miss)
-            v = Instantiate(missEffect, spawnPoint.transform);
-        else if (judgementType == JudgementType.Bad)
-            v = Instantiate(badEffect, spawnPoint.transform);
-        else if (judgementType == JudgementType.Good)
-            v = Instantiate(goodEffect, spawnPoint.transform);
-        else 
-            v = Instantiate(perfectEffect, spawnPoint.transform);
 
-        Destroy(v, 2);
+        }
+        else if (Type == MoveType.Middle) 
+        {
+            Instantiate(effects[1], middleSpawnPoint.transform);
+
+        }
+        else if (Type == MoveType.Low)
+        {
+            Instantiate(effects[2], lowSpawnPoint.transform);
+
+        }
+
+
     }
 }

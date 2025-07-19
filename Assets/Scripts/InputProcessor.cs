@@ -7,6 +7,8 @@ public class InputProcessor : MonoBehaviour
 {
     public static InputProcessor Instance;
 
+    public static MoveType currentInput { get; private set; }
+
     private readonly List<DirectionType> _directions = new();
 
     private readonly float _resetTime = 0.1f;
@@ -54,7 +56,8 @@ public class InputProcessor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             StopCoroutine(ResetDeque());
-            
+
+            currentInput = MoveType.High;
             // 노트 정보 저장
             var note = new NoteForJudge
             {
@@ -70,7 +73,9 @@ public class InputProcessor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             StopCoroutine(ResetDeque());
-            
+
+            currentInput = MoveType.Middle;
+
             // 노트 정보 저장
             var note = new NoteForJudge
             {
@@ -85,7 +90,9 @@ public class InputProcessor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             StopCoroutine(ResetDeque());
-            
+
+            currentInput = MoveType.Low;
+
             // 노트 정보 저장
             var note = new NoteForJudge
             {
