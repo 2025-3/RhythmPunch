@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
         moveType = InputProcessor.currentInput;
 
         //공격모드인지 방어 모드인지 판단
-        NoteType _nodeType = GameManager.Instance.sheet.sheetData.notes[i].noteType;
+        NoteType _nodeType = GameManager.Instance.sheets[GameManager.Instance.SheetIndex].sheetData.notes[i].noteType;
 
         //공격모드
         if (_nodeType == NoteType.Attack)
