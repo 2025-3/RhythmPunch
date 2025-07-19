@@ -18,7 +18,10 @@ public class Player : MonoBehaviour
         {
             PlayAnimation("Lose", "Win");
         });
-
+        GameManager.Instance.onWinGame.AddListener(() =>
+        {
+            PlayAnimation("Win", "Lose");
+        });
         GameManager.Instance.onCounterAttacked.AddListener(CommandAttack);
     }
     private void Play(int i, JudgementType type)
@@ -78,13 +81,6 @@ public class Player : MonoBehaviour
 
     private void PlayAnimation(string player, string enemy)
     {
-        /*
-         * State =>
-         *  Attack 1:��� 2:�ߴ� 3�ϴ�
-         *  Idle 0
-         *  Hit -1
-         *  Defend -2
-         */
 
         //�÷��̾� �ִϸ��̼�
         if(player == "Attack")
@@ -159,6 +155,12 @@ public class Player : MonoBehaviour
             enemyAnimator.SetTrigger("Win");
 
         }
+        else if(player == "Win" || enemy == "Lose")
+        {
+            playerAnimator.SetTrigger("Win");
+            enemyAnimator.SetTrigger("Lose");
+
+        }
     }
 
     private void CommandAttack()
@@ -206,16 +208,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void PlaySound()
-    {
-
-    }
-    public void ReturnToIdle()
-    {
-        playerAnimator.SetInteger("State", 0);
-        enemyAnimator.SetInteger("State", 0);
-
-    }
 }
 
 public enum Hit { Player, Enemy}
