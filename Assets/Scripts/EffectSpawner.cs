@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Sheets;
 public class EffectSpawner : MonoBehaviour
 {
     public static EffectSpawner Instance;
