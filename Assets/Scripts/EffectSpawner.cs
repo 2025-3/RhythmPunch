@@ -23,7 +23,12 @@ public class EffectSpawner : MonoBehaviour
             Destroy(this);
         }
     }
-    
+
+    private void Start()
+    {
+        if (spawnPoint == null) spawnPoint = new GameObject();
+        
+    }
     public void SpawnEffect(JudgementType judgementType)
     {
         GameObject v;
