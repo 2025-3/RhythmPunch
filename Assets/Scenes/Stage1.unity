@@ -884,6 +884,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1414454880502035224, guid: bd12e7eba87b0a14b84fd176a653dc99, type: 3}
+      propertyPath: lowSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fa5bd297207be9a4b854a1675aa213fb, type: 3}
+    - target: {fileID: 1414454880502035224, guid: bd12e7eba87b0a14b84fd176a653dc99, type: 3}
+      propertyPath: highSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3740f6e55dc131b4589753bcbec71c74, type: 3}
+    - target: {fileID: 1414454880502035224, guid: bd12e7eba87b0a14b84fd176a653dc99, type: 3}
+      propertyPath: middleSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ac9d67174c6d2424cb0e03b953ad658b, type: 3}
     - target: {fileID: 6435783287445321595, guid: bd12e7eba87b0a14b84fd176a653dc99, type: 3}
       propertyPath: m_Name
       value: NoteGenerator
@@ -1625,9 +1637,9 @@ MonoBehaviour:
   downArrow: {fileID: 21300000, guid: fc7cccc34a98f88438c09b062d8d0a81, type: 3}
   leftArrow: {fileID: 21300000, guid: 1d920928dcf824f4ca99bb048daa9592, type: 3}
   rightArrow: {fileID: 21300000, guid: 5764359774d5666418403494f9691d6b, type: 3}
-  highNote: {fileID: 21300000, guid: 4ba864f88f7ca9648990cc328cb8e214, type: 3}
-  middleNote: {fileID: 21300000, guid: 0ce811d63ebadc14abea01b8da19e955, type: 3}
-  lowNote: {fileID: 21300000, guid: c322d60f57d22c6479f64fc2c2881a22, type: 3}
+  highNote: {fileID: 21300000, guid: 3740f6e55dc131b4589753bcbec71c74, type: 3}
+  middleNote: {fileID: 21300000, guid: ac9d67174c6d2424cb0e03b953ad658b, type: 3}
+  lowNote: {fileID: 21300000, guid: fa5bd297207be9a4b854a1675aa213fb, type: 3}
 --- !u!1 &511753849
 GameObject:
   m_ObjectHideFlags: 0
@@ -1835,6 +1847,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onNoteDestroyed:
+    m_PersistentCalls:
+      m_Calls: []
+  onNoteDestroyedWithNote:
     m_PersistentCalls:
       m_Calls: []
   onComboAdded:
@@ -2443,9 +2458,9 @@ MonoBehaviour:
   downArrow: {fileID: 21300000, guid: fc7cccc34a98f88438c09b062d8d0a81, type: 3}
   leftArrow: {fileID: 21300000, guid: 1d920928dcf824f4ca99bb048daa9592, type: 3}
   rightArrow: {fileID: 21300000, guid: 5764359774d5666418403494f9691d6b, type: 3}
-  highNote: {fileID: 21300000, guid: 4ba864f88f7ca9648990cc328cb8e214, type: 3}
-  middleNote: {fileID: 21300000, guid: 0ce811d63ebadc14abea01b8da19e955, type: 3}
-  lowNote: {fileID: 21300000, guid: c322d60f57d22c6479f64fc2c2881a22, type: 3}
+  highNote: {fileID: 21300000, guid: 3740f6e55dc131b4589753bcbec71c74, type: 3}
+  middleNote: {fileID: 21300000, guid: ac9d67174c6d2424cb0e03b953ad658b, type: 3}
+  lowNote: {fileID: 21300000, guid: fa5bd297207be9a4b854a1675aa213fb, type: 3}
 --- !u!1 &984508147
 GameObject:
   m_ObjectHideFlags: 0
@@ -2591,6 +2606,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1985265461}
+  - {fileID: 1448024993}
   - {fileID: 290412802}
   - {fileID: 730198098}
   m_Father: {fileID: 0}
@@ -2740,7 +2756,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 0.35, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 290412802}
@@ -2786,7 +2802,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6b125235cc302f24bba9d6696b9675ce, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7bcdfbb794b0d48448e88164ff9ba683, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3246,10 +3262,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 6, y: 1.3, z: 1}
+  m_LocalScale: {x: 24, y: 2.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1985265461}
+  m_Father: {fileID: 1019178784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1448024994
 SpriteRenderer:
@@ -4119,8 +4135,8 @@ Transform:
   m_GameObject: {fileID: 1805317602}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 290412802}
@@ -4166,7 +4182,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 301c99bd100380f4f8f9a0418f76c132, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bf70c2dd6c29f4e4cb6a9f02a75a7ae4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4577,6 +4593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1985265461}
   - component: {fileID: 1985265460}
+  - component: {fileID: 1985265462}
   m_Layer: 0
   m_Name: NoteLine
   m_TagString: Untagged
@@ -4625,15 +4642,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3255e971dabcc794b9e825ffc1719718, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 40, y: 22.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1985265461
@@ -4645,13 +4662,27 @@ Transform:
   m_GameObject: {fileID: 1985265459}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1448024993}
+  m_Children: []
   m_Father: {fileID: 1019178784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1985265462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985265459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 098257fcaa3700848bc68f28a5e2a28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highBar: {fileID: 21300000, guid: 25e946b3f96d07048a4adb37315e4430, type: 3}
+  middleBar: {fileID: 21300000, guid: 87856e63da6c2bf4c8597f1fb24a9db9, type: 3}
+  lowBar: {fileID: 21300000, guid: f12a01906c65129499a34126ec90cb1d, type: 3}
 --- !u!1 &2016977221
 GameObject:
   m_ObjectHideFlags: 0
@@ -4847,9 +4878,9 @@ MonoBehaviour:
   downArrow: {fileID: 21300000, guid: fc7cccc34a98f88438c09b062d8d0a81, type: 3}
   leftArrow: {fileID: 21300000, guid: 1d920928dcf824f4ca99bb048daa9592, type: 3}
   rightArrow: {fileID: 21300000, guid: 5764359774d5666418403494f9691d6b, type: 3}
-  highNote: {fileID: 21300000, guid: 4ba864f88f7ca9648990cc328cb8e214, type: 3}
-  middleNote: {fileID: 21300000, guid: 0ce811d63ebadc14abea01b8da19e955, type: 3}
-  lowNote: {fileID: 21300000, guid: c322d60f57d22c6479f64fc2c2881a22, type: 3}
+  highNote: {fileID: 21300000, guid: 3740f6e55dc131b4589753bcbec71c74, type: 3}
+  middleNote: {fileID: 21300000, guid: ac9d67174c6d2424cb0e03b953ad658b, type: 3}
+  lowNote: {fileID: 21300000, guid: fa5bd297207be9a4b854a1675aa213fb, type: 3}
 --- !u!1001 &3722382307115021071
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent onStartGame; // 게임 시작 시 발생
     public UnityEvent onEndGame; // 게임 종료 시 발생
     public UnityEvent<int, JudgementType> onNoteDestroyed; // 노트 파괴 (시간초과 or 판정) 시 발생
+    public UnityEvent<int, JudgementType, NoteForJudge> onNoteDestroyedWithNote;
     public UnityEvent<MoveType> onComboAdded;
     public UnityEvent onCounterChanged;
     
@@ -109,6 +110,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log("방어 Miss");
                 CommandList.Dequeue();
             }
+            
+            onNoteDestroyedWithNote?.Invoke(_noteIndex, JudgementType.Miss, null);
             NextNode(JudgementType.Miss);
         }
     }
@@ -126,6 +129,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log(currentInputJudge);
                 CommandList.Enqueue(note.Type);  // 입력 기억하기
                 onComboAdded?.Invoke(note.Type);
+                
+                onNoteDestroyedWithNote?.Invoke(_noteIndex, currentInputJudge, note);
                 NextNode(currentInputJudge);
                 
                 //HP 소모
@@ -150,6 +155,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log(currentInputJudge);
                 
                 CommandList.Dequeue(); // 방어에 성공했으므로 제거
+                
+                onNoteDestroyedWithNote?.Invoke(_noteIndex, currentInputJudge, note);
                 NextNode(currentInputJudge);
             }
         }
