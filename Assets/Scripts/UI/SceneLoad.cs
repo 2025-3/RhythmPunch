@@ -13,4 +13,15 @@ public class SceneLoad : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public static void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+        Application.OpenURL(webplayerQuitURL);
+#else
+        Application.Quit();
+#endif
+    }
 }
