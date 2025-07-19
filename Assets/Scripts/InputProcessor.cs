@@ -1,73 +1,106 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InputProcessor : MonoBehaviour
 {
+    public static InputProcessor Instance;
 
-    public int count = 3;
+    private readonly List<DirectionType> _directions = new();
 
-    public static InputProcessor instance;
+    private readonly float _resetTime = 0.1f;
+
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         else
         {
             Destroy(this);
         }
     }
 
-    private void Start()
-    {
-    }
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            _directions.Add(DirectionType.Up);
+            StopCoroutine(ResetDeque());
+            StartCoroutine(ResetDeque());
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            _directions.Add(DirectionType.Down);
+            StopCoroutine(ResetDeque());
+            StartCoroutine(ResetDeque());
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            _directions.Add(DirectionType.Left);
+            StopCoroutine(ResetDeque());
+            StartCoroutine(ResetDeque());
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            _directions.Add(DirectionType.Right);
+            StopCoroutine(ResetDeque());
+            StartCoroutine(ResetDeque());
+        }
+        
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            //³λΖ® Α¤ΊΈ ΐϊΐε
-            Note note = new Note();
-            note.type = Note.Type.top;
-            note.data = new NoteData();
-            note.data.time = Time.time;
-            note.data.noteType = GameManager.Instance.mode;
+            StopCoroutine(ResetDeque());
+            
+            // λ…ΈνΈ μ •λ³΄ μ €μ¥
+            var note = new NoteForJudge
+            {
+                Time = Time.time,
+                Type = MoveType.High,
+                Directions = _directions.ToList(), // λ³µμ‚¬λ¨λ”κ±° λ§μ— μ•λ“¬
+            };
 
-            //°ΤΐΣ ΈΕ΄Οΐϊ ΖΗ΄ά
+            // κ²μ„λ§¤λ‹μ €μ—μ„ νμ •
             GameManager.Instance.Judge(note);
-         
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            Note note = new Note();
-            note.type = Note.Type.middle;
-            note.data = new NoteData();
-            note.data.time = Time.time;
-            note.data.noteType = GameManager.Instance.mode;
-
-
+            StopCoroutine(ResetDeque());
+            
+            // λ…ΈνΈ μ •λ³΄ μ €μ¥
+            var note = new NoteForJudge
+            {
+                Time = Time.time,
+                Type = MoveType.Middle,
+                Directions = _directions.ToList(),
+            };
+            
             GameManager.Instance.Judge(note);
-
         }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Note note = new Note();
-            note.type = Note.Type.bottom;
-            note.data = new NoteData();
-            note.data.time = Time.time;
-            note.data.noteType = GameManager.Instance.mode;
+            StopCoroutine(ResetDeque());
+            
+            // λ…ΈνΈ μ •λ³΄ μ €μ¥
+            var note = new NoteForJudge
+            {
+                Time = Time.time,
+                Type = MoveType.Low,
+                Directions = _directions.ToList(),
+            };
 
             GameManager.Instance.Judge(note);
-
         }
-        
     }
-}
 
-public class Note
-{
-    public NoteData data;
-    public enum Type { top, middle, bottom, NaN }
-    public Type type;
+    private IEnumerator ResetDeque()
+    {
+        yield return new WaitForSeconds(_resetTime);
+        _directions.Clear();
+    }
 }
