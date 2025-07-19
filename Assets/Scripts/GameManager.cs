@@ -20,15 +20,18 @@ public class GameManager : MonoBehaviour
     private float _startTime; // 시작된 타임스탬프
     private float CurrentTime => Time.time - _startTime; // 타임스탬프 기반 시작된지 몇초지났는지
     
-    public Sheet sheet; // 악보정보
-    public int level;
+    public List<Sheet> sheets; // 악보정보
+    public int SheetIndex { get; private set; } = 0;
+    public int level = 1;
     
     public readonly Queue<MoveType> CommandList = new(); // 공격모드때 쌓인 커맨드 리스트
     public readonly CounterList CounterList = new(); // 방어모드때 해야할 카운터 리스트
+    private GenerateCounterListsStrategy _counterGenerator;
     
     public UnityEvent onStartGame; // 게임 시작 시 발생
     public UnityEvent onEndGame; // 게임 종료 시 발생
     public UnityEvent<int, JudgementType> onNoteDestroyed; // 노트 파괴 (시간초과 or 판정) 시 발생
+    public UnityEvent<MoveType> onComboAdded;
     
     private void Awake()
     {
@@ -44,6 +47,18 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        level = sheets[0].sheetData.level;
+        _counterGenerator = level switch
+        {
+            0 => new Stage0(),
+            1 => new Stage1(),
+            2 => new Stage2(),
+            3 => new Stage3(),
+            4 => new Stage4(),
+            5 => new Stage5(),
+            6 => new Stage6()
+        };
+        
         StartGame(); // 적절한 위치로 옮겨야함 (ui라던가 onLoad라던가 등등)
     }
 
@@ -51,10 +66,9 @@ public class GameManager : MonoBehaviour
     {
         if (_isPlaying)
         {
-            if (_noteIndex >= sheet.sheetData.notes.Length)
+            if (_noteIndex >= sheets[SheetIndex].sheetData.notes.Length)
             {
-                EndGame();
-                return;
+                ChangeSheet();
             }
             
             MissJudge(); // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
@@ -65,7 +79,7 @@ public class GameManager : MonoBehaviour
     {
         _isPlaying = true;
         _startTime = Time.time;
-        ChangeMode(sheet.sheetData.notes[0].noteType);
+        ChangeMode(sheets[0].sheetData.notes[0].noteType);
         onStartGame?.Invoke();
     }
 
@@ -78,12 +92,14 @@ public class GameManager : MonoBehaviour
     private void MissJudge()
     {
         // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
-        if (sheet.sheetData.notes[_noteIndex].time + 0.5f < CurrentTime)
+        if (sheets[SheetIndex].sheetData.notes[_noteIndex].time + 0.5f < CurrentTime)
         {
             if (Mode == NoteType.Attack)
             {
                 // 공격 모드: Miss 상황이므로 강제로 빈 노트를 만들어 기록
-                CommandList.Enqueue((MoveType)Random.Range(0, 3)); // 플레이어 입력 목록에 랜덤값 추가
+                var randomNote = (MoveType)Random.Range(0, 3);
+                CommandList.Enqueue(randomNote); // 플레이어 입력 목록에 랜덤값 추가
+                onComboAdded?.Invoke(randomNote);
             }
             else
             {
@@ -101,12 +117,13 @@ public class GameManager : MonoBehaviour
 
         if (Mode == NoteType.Attack) // 공격 모드 판정
         {
-            var currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
+            var currentInputJudge = sheets[SheetIndex].Judge(_noteIndex, noteRealTime);
 
             if (currentInputJudge != JudgementType.NoJudge) // 공격 타이밍이 일치하면
             {
                 Debug.Log(currentInputJudge);
                 CommandList.Enqueue(note.Type);  // 입력 기억하기
+                onComboAdded?.Invoke(note.Type);
                 NextNode(currentInputJudge);
                 
                 //HP 소모
@@ -114,7 +131,7 @@ public class GameManager : MonoBehaviour
         }
         else // 방어 모드 일시
         {
-            var currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
+            var currentInputJudge = sheets[SheetIndex].Judge(_noteIndex, noteRealTime);
             if (currentInputJudge != JudgementType.NoJudge)
             {
                 Debug.Log(CommandList.Peek());
@@ -153,8 +170,8 @@ public class GameManager : MonoBehaviour
 
         NowModeCount = 0;
         NowModeLength = 0;
-        while (_noteIndex + NowModeLength < sheet.sheetData.notes.Length &&
-               Mode == sheet.sheetData.notes[_noteIndex + NowModeLength].noteType)
+        while (_noteIndex + NowModeLength < sheets[SheetIndex].sheetData.notes.Length &&
+               Mode == sheets[SheetIndex].sheetData.notes[_noteIndex + NowModeLength].noteType)
         {
             NowModeLength++;
         }
@@ -171,30 +188,16 @@ public class GameManager : MonoBehaviour
     private void GenerateCounterList()
     {
         CounterList.Clear();
-        for (int i = 0; i < 3; i++)
+        var counterList = _counterGenerator.Generate();
+
+        foreach (var item in counterList)
         {
-            List<DirectionType> directions = new();
-            bool needGenerate = true;
-            while (needGenerate)
-            {
-                needGenerate = false;
-                for (int j = 0; j < level; j++)
-                {
-                    directions.Add((DirectionType)Random.Range(0, 4));
-                    
-                    if (j >= 1 &&
-                        ((directions[j - 1] == DirectionType.Up && directions[j] == DirectionType.Up) ||
-                         (directions[j - 1] == DirectionType.Down && directions[j] == DirectionType.Down)))
-                    {
-                        needGenerate = true;
-                        directions.Clear();
-                        break;
-                    }
-                }
-            }
-            
-            CounterList.Add((directions, (MoveType)Random.Range(0, 3), false));
+            CounterList.Add((item, (MoveType)Random.Range(0, 3), false));
         }
+        
+        foreach (var item in CounterList)
+            Debug.Log(string.Join("", item.directions) + ": " + item.moveType);
+        
     }
 
     private bool CheckCounterList(NoteForJudge note)
@@ -207,7 +210,7 @@ public class GameManager : MonoBehaviour
                 bool isSame = true;
                 for (int j = 0; j < directionList.Count; j++)
                 {
-                    if (directionList[i] != note.Directions[^j])
+                    if (directionList[i] != note.Directions[^(j+1)])
                     {
                         isSame = false;
                         break;
@@ -217,10 +220,36 @@ public class GameManager : MonoBehaviour
                 if (isSame)
                 {
                     CounterList[i] = (directionList, moveType, true);
+                    Debug.Log("OK!");
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private void ChangeSheet()
+    {
+        SheetIndex++;
+        if (SheetIndex >= sheets.Count)
+        {
+            EndGame();
+            return;
+        }
+
+        _noteIndex = 0;
+        level = sheets[SheetIndex].sheetData.level;
+        _counterGenerator = level switch
+        {
+            0 => new Stage0(),
+            1 => new Stage1(),
+            2 => new Stage2(),
+            3 => new Stage3(),
+            4 => new Stage4(),
+            5 => new Stage5(),
+            6 => new Stage6()
+        };
+        
+        ChangeMode(sheets[SheetIndex].sheetData.notes[0].noteType);
     }
 }
