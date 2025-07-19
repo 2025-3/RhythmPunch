@@ -12,6 +12,10 @@ namespace ObjectControls
         public Sprite highSprite;
         public Sprite middleSprite;
         public Sprite lowSprite;
+
+        public ParticleSystem perfectParticle;
+        public ParticleSystem goodParticle;
+        public ParticleSystem missParticle;
         
         public Vector2 startPos;
         public Vector2 endPos;
@@ -118,21 +122,18 @@ namespace ObjectControls
         private void DestroyNote(JudgementType reason)
         {
             var oldNote = _moveNoteQueue.Dequeue();
-            
-            // need to generate particle
-            switch (reason)
+
+            var ps = reason switch
             {
-                case JudgementType.Miss:
-                case JudgementType.Fail:
-                    break;
-                
-                case JudgementType.Good:
-                    break;
-                
-                case JudgementType.Perfect:
-                    break;
-            }
+                JudgementType.Miss or
+                    JudgementType.Fail or
+                    JudgementType.Bad => Instantiate(missParticle, oldNote.transform.position, Quaternion.identity),
+                JudgementType.Good or
+                    JudgementType.Great => Instantiate(goodParticle, oldNote.transform.position, Quaternion.identity),
+                JudgementType.Perfect => Instantiate(perfectParticle, oldNote.transform.position, Quaternion.identity)
+            };
             
+            Destroy(ps.gameObject, 1.5f);
             Destroy(oldNote);
         }
 

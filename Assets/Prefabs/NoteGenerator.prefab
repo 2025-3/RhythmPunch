@@ -46,9 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   note: {fileID: 5734182513395483182, guid: 8ccc2e1b94e5be8468ba68a33addc04f, type: 3}
   guardSprite: {fileID: 21300000, guid: 7739c48e73c7e5947ad3f7347ff77ab2, type: 3}
-  highSprite: {fileID: 21300000, guid: 4ba864f88f7ca9648990cc328cb8e214, type: 3}
-  middleSprite: {fileID: 21300000, guid: 0ce811d63ebadc14abea01b8da19e955, type: 3}
-  lowSprite: {fileID: 21300000, guid: c322d60f57d22c6479f64fc2c2881a22, type: 3}
+  highSprite: {fileID: 21300000, guid: 3740f6e55dc131b4589753bcbec71c74, type: 3}
+  middleSprite: {fileID: 21300000, guid: ac9d67174c6d2424cb0e03b953ad658b, type: 3}
+  lowSprite: {fileID: 21300000, guid: fa5bd297207be9a4b854a1675aa213fb, type: 3}
+  perfectParticle: {fileID: 3417252716908524132, guid: 3b3f4e245c6e5374687da252d53b1236, type: 3}
+  goodParticle: {fileID: 2711753205424103446, guid: 9a63e91ca20f6d5428f708ea5da8b1a5, type: 3}
+  missParticle: {fileID: 1551201292834075006, guid: 61cdd92094b2fc04393e3f562be29578, type: 3}
   startPos: {x: 8.9, y: -3.5}
   endPos: {x: -5.2, y: -3.5}
   z: 3
