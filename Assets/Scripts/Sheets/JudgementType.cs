@@ -9,6 +9,7 @@ namespace Sheets
         Miss,
         Bad,
         Good,
+        Great,
         Perfect
     }
 }

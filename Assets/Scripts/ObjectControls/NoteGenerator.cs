@@ -54,7 +54,10 @@ namespace ObjectControls
                     go.gameObject.SetActive(false);
                     _noteQueue.Enqueue(go);
                     if (sheets[0].sheetData.notes[i].noteType == NoteType.Guard)
+                    {
+                        go.GetComponent<SpriteRenderer>().sprite = guardSprite;
                         _guardNotes.Enqueue(go.gameObject);
+                    }
                 }
             }
         }

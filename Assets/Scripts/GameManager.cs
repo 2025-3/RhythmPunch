@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent onEndGame; // 게임 종료 시 발생
     public UnityEvent<int, JudgementType> onNoteDestroyed; // 노트 파괴 (시간초과 or 판정) 시 발생
     public UnityEvent<MoveType> onComboAdded;
+    public UnityEvent onCounterChanged;
     
     private void Awake()
     {
@@ -198,7 +199,8 @@ public class GameManager : MonoBehaviour
         
         foreach (var item in CounterList)
             Debug.Log(string.Join("", item.directions) + ": " + item.moveType);
-        
+
+        onCounterChanged?.Invoke();
     }
 
     private bool CheckCounterList(NoteForJudge note)
@@ -221,7 +223,7 @@ public class GameManager : MonoBehaviour
                 if (isSame)
                 {
                     CounterList[i] = (directionList, moveType, true);
-                    Debug.Log("OK!");
+                    onCounterChanged?.Invoke();
                     return true;
                 }
             }

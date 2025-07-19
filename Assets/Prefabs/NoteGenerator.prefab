@@ -45,9 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   note: {fileID: 5734182513395483182, guid: 8ccc2e1b94e5be8468ba68a33addc04f, type: 3}
-  highSprite: {fileID: 0}
-  middleSprite: {fileID: 0}
-  lowSprite: {fileID: 0}
+  guardSprite: {fileID: 21300000, guid: 7739c48e73c7e5947ad3f7347ff77ab2, type: 3}
+  highSprite: {fileID: 21300000, guid: 4ba864f88f7ca9648990cc328cb8e214, type: 3}
+  middleSprite: {fileID: 21300000, guid: 0ce811d63ebadc14abea01b8da19e955, type: 3}
+  lowSprite: {fileID: 21300000, guid: c322d60f57d22c6479f64fc2c2881a22, type: 3}
   startPos: {x: 8.9, y: -3.5}
   endPos: {x: -5.2, y: -3.5}
+  z: 3
   moveTime: 2
