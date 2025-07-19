@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
         {
             PlayAnimation("Lose", "Win");
         });
+
+        GameManager.Instance.onCounterAttacked.AddListener(CommandAttack);
     }
     private void Play(int i, JudgementType type)
     {
@@ -26,25 +28,22 @@ public class Player : MonoBehaviour
         //���ݸ������ ��� ������� �Ǵ�
         NoteType _nodeType = GameManager.Instance.sheets[GameManager.Instance.SheetIndex].sheetData.notes[i].noteType;
 
-        //���ݸ��
+        //공격 모드일때
         if (_nodeType == NoteType.Attack)
         {
+            PlayEffect(Hit.Enemy, type);
+
             //���� �����ϸ� {Perfect Good Bad}
             if (type == JudgementType.Perfect || type == JudgementType.Good )
             {
                 Debug.Log("\"Attack\", \"Hit\"");
                 PlayAnimation("Attack", "Hit"); //�÷��̾� ����, �� �ǰ�
-
-                PlayEffect(type);
-
             }
             else if (type == JudgementType.Bad)
             {
                 Debug.Log("Attack  Defend");
 
                 PlayAnimation("Attack", "Defend"); //�÷��̾� ����, �� ���
-
-                PlayEffect(type);
 
             }
             //Miss �ÿ� idle
@@ -54,26 +53,23 @@ public class Player : MonoBehaviour
 
                 PlayAnimation("Idle", "Idle"); //�÷��̾� idle, �� idle
 
-                PlayEffect(type);
             }
         }
 
-        //��� ����̸�
+        //방어 모드일때
         else
         {
-            //��� �����ϸ� {Perfect Good}
+            PlayEffect(Hit.Player, type);
+
+            //방어에 성공했을 때 {Perfect Good}
             if (type == JudgementType.Perfect || type == JudgementType.Good)
             {
                 PlayAnimation("Defend", "Attack"); //�÷��̾� ���, �� ����
-
-                PlayEffect(type);
 
             }
             else
             {
                 PlayAnimation("Hit", "Attck"); //�÷��̾� �ǰ�, �� ����
-
-                PlayEffect(type);
 
             }
         }
@@ -156,12 +152,58 @@ public class Player : MonoBehaviour
             enemyAnimator?.SetInteger("State", 0);
 
         }
+
+        if(player == "Lose"|| enemy == "Win")
+        {
+            playerAnimator.SetTrigger("Lose");
+            enemyAnimator.SetTrigger("Win");
+
+        }
     }
 
-    private void PlayEffect(JudgementType type)
+    private void CommandAttack()
     {
+        moveType = InputProcessor.currentInput;
 
-        EffectSpawner.Instance.SpawnEffect(moveType);
+        switch (moveType)
+        {
+            case MoveType.High:
+                playerAnimator?.SetTrigger("HighC");
+                enemyAnimator.SetTrigger("Hit");
+                break;
+            case MoveType.Middle:
+                playerAnimator?.SetTrigger("MiddleC");
+                enemyAnimator.SetTrigger("Hit");
+
+                break;
+            case MoveType.Low:
+                playerAnimator?.SetTrigger("LowC");
+                enemyAnimator.SetTrigger("Hit");
+
+                break;
+
+        }
+    }
+
+    private void PlayEffect(Hit h, JudgementType type)
+    {
+        if (h == Hit.Player)
+        {
+            //방어에 성공하면
+            if (type == JudgementType.Perfect || type == JudgementType.Good) 
+            {
+                EffectSpawner.Instance.DefendPlayer();
+            }
+            else
+            {
+                EffectSpawner.Instance.HitPlayerEffect(moveType);
+            }
+
+        }
+        else if (h == Hit.Enemy)
+        {
+            EffectSpawner.Instance.HitEnemyEffect(moveType);
+        }
     }
 
     private void PlaySound()
@@ -175,3 +217,5 @@ public class Player : MonoBehaviour
 
     }
 }
+
+public enum Hit { Player, Enemy}
