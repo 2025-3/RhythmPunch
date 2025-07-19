@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
         _startTime = Time.time;
         ChangeMode(sheets[0].sheetData.notes[0].noteType);
         onStartGame?.Invoke();
+        SoundManager.Instance.PlayBGM(0, true);
     }
 
     public void EndGame()
