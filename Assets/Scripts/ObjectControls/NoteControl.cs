@@ -11,6 +11,8 @@ namespace ObjectControls
 
         private Vector2 Direction => (endPos - startPos).normalized;
         private float Speed => (endPos - startPos).magnitude / moveTime;
+
+        private bool _isMove = false;
         
         private void Awake()
         {
@@ -24,7 +26,13 @@ namespace ObjectControls
 
         private void Update()
         {
-            transform.position += Speed * Time.deltaTime * (Vector3)Direction;
+            if (_isMove)
+                transform.position += Speed * Time.deltaTime * (Vector3)Direction;
+        }
+
+        public void StartMove()
+        {
+            _isMove = true;
         }
     }
 }

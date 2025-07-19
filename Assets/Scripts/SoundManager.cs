@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Audio; // Ãß°¡
+using UnityEngine.Audio; // ï¿½ß°ï¿½
 
 
 /*
  * 
- * // ¹è°æÀ½ ½ÇÇà
+ * // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 SoundManager.Instance.PlayBGM(0);
 
-// ³ëÆ® È÷Æ®À½
+// ï¿½ï¿½Æ® ï¿½ï¿½Æ®ï¿½ï¿½
 SoundManager.Instance.PlayNoteHit(1);
 
-// ¹öÆ° Å¬¸¯À½
+// ï¿½ï¿½Æ° Å¬ï¿½ï¿½ï¿½ï¿½
 SoundManager.Instance.PlaySFX(2);
 *
 *
@@ -21,7 +21,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
-    public AudioMixer audioMixer;  // ÀÎ½ºÆåÅÍ¿¡¼­ ¿¬°áÇÒ AudioMixer
+    public AudioMixer audioMixer;  // ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ AudioMixer
 
     [Header("Audio Sources")]
     public AudioSource bgmSource;
@@ -46,6 +46,14 @@ public class SoundManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.onNoteDestroyed.AddListener((_, judge) =>
+        {
+            PlayNoteHit((int)judge);
+        });
     }
 
     // ------------------------
@@ -94,14 +102,14 @@ public class SoundManager : MonoBehaviour
 
     /*
      * 
-     * // UI ½½¶óÀÌ´õ¿¡¼­ È£Ãâ
+     * // UI ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½
         public void OnBGMVolumeChanged(float value)
         {
             SoundManager.Instance.SetBGMVolume(value);  // value = 0.0 ~ 1.0
         }
     */
 
-    // 0.0001 ~ 1.0 »çÀÌ °ª ¡æ -80 ~ 0 dB·Î º¯È¯
+    // 0.0001 ~ 1.0 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ -80 ~ 0 dBï¿½ï¿½ ï¿½ï¿½È¯
     public void SetBGMVolume(float volume)
     {
         audioMixer.SetFloat("BGMVolume", Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20);

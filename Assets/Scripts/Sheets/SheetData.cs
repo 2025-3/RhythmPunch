@@ -6,6 +6,8 @@ namespace Sheets
     [Serializable]
     public class SheetData
     {
+        public int level;
+        public float reachingTime;
         public NoteData[] notes;
     }
 }
