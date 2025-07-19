@@ -1,24 +1,23 @@
 {
   "level": 1,
-  "reachingTime": 2.0,
+  "reachingTime": 1.5,
   "notes":
   [
     { "time": 30.6, "noteType": 0 },
     { "time": 31.4, "noteType": 0 },
-    { "time": 31.7, "noteType": 0 },
+   
     { "time": 32, "noteType": 0 },
-    { "time": 32.3, "noteType": 0 },
-    { "time": 32.5, "noteType": 0 },
+    
+    
     { "time": 32.8, "noteType": 0 },
     { "time": 33.1, "noteType": 0 },
-    { "time": 33.4, "noteType": 0 },
+    
     { "time": 34.2, "noteType": 1},
     { "time": 35.1, "noteType": 1 },
-    {"time": 35.5, "noteType": 1 },
+   
     { "time": 35.8, "noteType": 1 },
-    { "time": 36.1, "noteType": 1 },
-    { "time": 36.3, "noteType": 1 },
-    { "time": 36.6, "noteType": 1},
+    
+    
     { "time": 36.8, "noteType": 1 },
      { "time": 37.7, "noteType": 1 }
 

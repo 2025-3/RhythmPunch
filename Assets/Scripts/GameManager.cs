@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     
     public UnityEvent onStartGame; // 게임 시작 시 발생
     public UnityEvent onEndGame; // 게임 종료 시 발생
+    public UnityEvent onWinGame;
     public UnityEvent<int, JudgementType> onNoteDestroyed; // 노트 파괴 (시간초과 or 판정) 시 발생
     public UnityEvent<int, JudgementType, NoteForJudge> onNoteDestroyedWithNote;
     public UnityEvent<MoveType> onComboAdded;
@@ -40,8 +41,19 @@ public class GameManager : MonoBehaviour
     public UnityEvent onCounterAttacked;
 
     public int MaxHp { get; private set; } = 3;
-    public int NowHp { get; private set; }
-    
+
+    private int _nowHp;
+    public int NowHp
+    {
+        get => _nowHp;
+        private set
+        {
+            _nowHp = Math.Clamp(value, 0, MaxHp);
+            if (_nowHp <= 0)
+                EndGame(false);
+        }
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -67,30 +79,12 @@ public class GameManager : MonoBehaviour
             5 => new Stage5(),
             6 => new Stage6()
         };
-        
-        StartCoroutine(DelayedStart()); // 적절한 위치로 옮겨야함 (ui라던가 onLoad라던가 등등)
-    }
-
-    private IEnumerator DelayedStart()
-    {
-        yield return new WaitForSeconds(3.0f);
-        StartGame();
     }
 
     private void Update()
     {
         if (_isPlaying)
         {
-            if (NowHp <= 0)
-            {
-                EndGame();
-            }
-            
-            if (_noteIndex >= sheets[SheetIndex].sheetData.notes.Length)
-            {
-                ChangeSheet();
-            }
-            
             MissJudge(); // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
         }
     }
@@ -105,11 +99,14 @@ public class GameManager : MonoBehaviour
         onStartGame?.Invoke();
     }
 
-    public void EndGame()
+    public void EndGame(bool isWin)
     {
         _isPlaying = false;
         SoundManager.Instance.StopBGM();
-        onEndGame?.Invoke();
+        if (isWin)
+            onWinGame?.Invoke();
+        else
+            onEndGame?.Invoke();
     }
 
     private void MissJudge()
@@ -181,9 +178,6 @@ public class GameManager : MonoBehaviour
     {
         onNoteDestroyed?.Invoke(_noteIndex, reason);
 
-        if (reason is JudgementType.Bad or JudgementType.Fail or JudgementType.Miss)
-            NowHp--;
-        
         if (reason is JudgementType.Perfect or JudgementType.Great or JudgementType.Good)
         {
             ComboCount++;
@@ -191,14 +185,20 @@ public class GameManager : MonoBehaviour
         else
         {
             ComboCount = 0;
+            NowHp--;
         }
         
         _noteIndex++;
-        NowModeCount++;
-        
-        if (NowModeCount >= NowModeLength)
-            ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
-        
+        if (_noteIndex >= sheets[SheetIndex].sheetData.notes.Length)
+        {
+            ChangeSheet();
+        }
+        else
+        {
+            NowModeCount++;
+            if (NowModeCount >= NowModeLength)
+                ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
+        }
         
         Debug.Log($"Sheet {SheetIndex} {_noteIndex}");
     }
@@ -219,8 +219,9 @@ public class GameManager : MonoBehaviour
         {
             CommandList.Clear();
 
-            foreach (var (_, _, isUsed) in CounterList)
+            foreach (var (a,b, isUsed) in CounterList)
             {
+                Debug.Log($"{a} {b} {isUsed}");
                 if (!isUsed)
                 {
                     NowHp--;
@@ -278,7 +279,7 @@ public class GameManager : MonoBehaviour
         SheetIndex++;
         if (SheetIndex >= sheets.Count)
         {
-            EndGame();
+            EndGame(true);
             return;
         }
 
