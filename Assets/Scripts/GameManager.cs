@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Sheets;
 using UnityEngine;
 using UnityEngine.Events;
+
+using CounterList = System.Collections.Generic.List<(System.Collections.Generic.List<DirectionType> directions, MoveType moveType, bool isUsed)>;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,12 +21,14 @@ public class GameManager : MonoBehaviour
     private float CurrentTime => Time.time - _startTime; // 타임스탬프 기반 시작된지 몇초지났는지
     
     public Sheet sheet; // 악보정보
-
-    private readonly Queue<MoveType> _commandList = new(); // 공격모드때 쌓인 커맨드 리스트
-
+    public int level;
+    
+    public readonly Queue<MoveType> CommandList = new(); // 공격모드때 쌓인 커맨드 리스트
+    public readonly CounterList CounterList = new(); // 방어모드때 해야할 카운터 리스트
+    
     public UnityEvent onStartGame; // 게임 시작 시 발생
     public UnityEvent onEndGame; // 게임 종료 시 발생
-    public UnityEvent<int> onNoteDestroyed; // 노트 파괴 (시간초과 or 판정) 시 발생
+    public UnityEvent<int, JudgementType> onNoteDestroyed; // 노트 파괴 (시간초과 or 판정) 시 발생
     
     private void Awake()
     {
@@ -77,57 +83,62 @@ public class GameManager : MonoBehaviour
             if (_mode == NoteType.Attack)
             {
                 // 공격 모드: Miss 상황이므로 강제로 빈 노트를 만들어 기록
-                _commandList.Enqueue((MoveType)Random.Range(0, 3)); // 플레이어 입력 목록에 랜덤값 추가
+                CommandList.Enqueue((MoveType)Random.Range(0, 3)); // 플레이어 입력 목록에 랜덤값 추가
             }
             else
             {
                 // 방어 모드: 입력하지 못한 공격을 제거
                 Debug.Log("방어 Miss");
-                _commandList.Dequeue();
+                CommandList.Dequeue();
             }
-            NextNode();
+            NextNode(JudgementType.Miss);
         }
     }
     
     public void Judge(NoteForJudge note)
     {
         var noteRealTime = note.Time - _startTime;
-        JudgementType currentInputJudge;
 
         if (_mode == NoteType.Attack) // 공격 모드 판정
         {
-            currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
+            var currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
 
             if (currentInputJudge != JudgementType.NoJudge) // 공격 타이밍이 일치하면
             {
                 Debug.Log(currentInputJudge);
-                _commandList.Enqueue(note.Type);  // 입력 기억하기
-                NextNode();
+                CommandList.Enqueue(note.Type);  // 입력 기억하기
+                NextNode(currentInputJudge);
                 
                 //HP 소모
             }
         }
         else // 방어 모드 일시
         {
-            currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
+            var currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
             if (currentInputJudge != JudgementType.NoJudge)
             {
-                Debug.Log(_commandList.Peek());
+                Debug.Log(CommandList.Peek());
                 // 입력한 노트가 기록된 공격과 다르면 실패처리          
-                if (note.Type != _commandList.Peek())
+                if (note.Type != CommandList.Peek())
                     currentInputJudge = JudgementType.Fail;
+                
+                // 여기서 카운터 처리 필요
+                if (CheckCounterList(note))
+                {
+                    
+                }
                 
                 Debug.Log(currentInputJudge);
                 
-                _commandList.Dequeue(); // 방어에 성공했으므로 제거
-                NextNode();
+                CommandList.Dequeue(); // 방어에 성공했으므로 제거
+                NextNode(currentInputJudge);
             }
         }
     }
 
-    private void NextNode()
+    private void NextNode(JudgementType reason)
     {
-        onNoteDestroyed?.Invoke(_noteIndex);
+        onNoteDestroyed?.Invoke(_noteIndex, reason);
         
         _noteIndex++;
         _nowModeCount++;
@@ -152,7 +163,64 @@ public class GameManager : MonoBehaviour
         
         if (_mode == NoteType.Attack)
         {
-            _commandList.Clear();
+            CommandList.Clear();
+            GenerateCounterList();
         }
+    }
+
+    private void GenerateCounterList()
+    {
+        CounterList.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            List<DirectionType> directions = new();
+            bool needGenerate = true;
+            while (needGenerate)
+            {
+                needGenerate = false;
+                for (int j = 0; j < level; j++)
+                {
+                    directions.Add((DirectionType)Random.Range(0, 4));
+                    
+                    if (j >= 1 &&
+                        ((directions[j - 1] == DirectionType.Up && directions[j] == DirectionType.Up) ||
+                         (directions[j - 1] == DirectionType.Down && directions[j] == DirectionType.Down)))
+                    {
+                        needGenerate = true;
+                        directions.Clear();
+                        break;
+                    }
+                }
+            }
+            
+            CounterList.Add((directions, (MoveType)Random.Range(0, 3), false));
+        }
+    }
+
+    private bool CheckCounterList(NoteForJudge note)
+    {
+        for (int i = 0; i < CounterList.Count; i++)
+        {
+            var (directionList, moveType, isUsed) =  CounterList[i];
+            if (!isUsed && note.Type == moveType && note.Directions.Count >= directionList.Count)
+            {
+                bool isSame = true;
+                for (int j = 0; j < directionList.Count; j++)
+                {
+                    if (directionList[i] != note.Directions[^j])
+                    {
+                        isSame = false;
+                        break;
+                    }
+                }
+
+                if (isSame)
+                {
+                    CounterList[i] = (directionList, moveType, true);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sheets;
 using UnityEngine;
 
 namespace ObjectControls
@@ -26,7 +27,7 @@ namespace ObjectControls
         private void Start()
         {
             GameManager.Instance.onStartGame.AddListener(StartGenerate);
-            GameManager.Instance.onNoteDestroyed.AddListener(_ => { DestroyNote(); });
+            GameManager.Instance.onNoteDestroyed.AddListener((_, reason) => { DestroyNote(reason); });
         }
 
         private void Update()
@@ -61,9 +62,25 @@ namespace ObjectControls
             _noteQueue.Enqueue(newNote);
         }
 
-        public void DestroyNote()
+        public void DestroyNote(JudgementType reason)
         {
             var oldNote = _noteQueue.Dequeue();
+
+            // need to generate particle
+            switch (reason)
+            {
+                case JudgementType.Miss:
+                case JudgementType.Fail:
+                    break;
+                
+                case JudgementType.Good:
+                    break;
+                
+                case JudgementType.Perfect:
+                    break;
+            }
+            
+            
             Destroy(oldNote.gameObject);
         }
     }

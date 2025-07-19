@@ -2,10 +2,16 @@
   "notes":
   [
     { "time": 5, "noteType": 0 },
-    { "time": 6, "noteType": 0 },
-    { "time": 7, "noteType": 0 },
-    { "time": 10, "noteType": 1 },
-    { "time": 11, "noteType": 1 },
-    { "time": 12, "noteType": 1 }
+    { "time": 5.3, "noteType": 0 },
+    { "time": 5.6, "noteType": 0 },
+    { "time": 7, "noteType": 1 },
+    { "time": 7.3, "noteType": 1 },
+    { "time": 7.6, "noteType": 1 },
+    { "time": 10, "noteType": 0 },
+    { "time": 10.4, "noteType": 0 },
+    { "time": 10.8, "noteType": 0 },
+    { "time": 13, "noteType": 1 },
+    { "time": 13.4, "noteType": 1 },
+    { "time": 13.8, "noteType": 1 }
   ]
 }

@@ -740,7 +740,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1414454880502035224, guid: bd12e7eba87b0a14b84fd176a653dc99, type: 3}
       propertyPath: moveTime
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6435783287445321595, guid: bd12e7eba87b0a14b84fd176a653dc99, type: 3}
       propertyPath: m_Name
