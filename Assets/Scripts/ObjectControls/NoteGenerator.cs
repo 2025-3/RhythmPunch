@@ -7,13 +7,15 @@ namespace ObjectControls
     public class NoteGenerator : MonoBehaviour
     {
         public NoteControl note;
-        
+
+        public Sprite guardSprite;
         public Sprite highSprite;
         public Sprite middleSprite;
         public Sprite lowSprite;
         
         public Vector2 startPos;
         public Vector2 endPos;
+        public float z;
         public float moveTime;
 
         private readonly Queue<NoteControl> _noteQueue = new();
@@ -47,7 +49,8 @@ namespace ObjectControls
             {
                 for (int i = 0; i < sheet.sheetData.notes.Length; i++)
                 {
-                    var go = Instantiate(note, startPos, Quaternion.identity);
+                    var initPos = new Vector3(startPos.x, startPos.y, z);
+                    var go = Instantiate(note, initPos, Quaternion.identity);
                     go.gameObject.SetActive(false);
                     _noteQueue.Enqueue(go);
                     if (sheets[0].sheetData.notes[i].noteType == NoteType.Guard)

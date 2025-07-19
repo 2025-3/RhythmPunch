@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   note: {fileID: 5734182513395483182, guid: 8ccc2e1b94e5be8468ba68a33addc04f, type: 3}
-  startPos: {x: 11.5, y: -2.42}
-  endPos: {x: -9.6779, y: -2.42}
-  moveTime: 0.1
+  highSprite: {fileID: 0}
+  middleSprite: {fileID: 0}
+  lowSprite: {fileID: 0}
+  startPos: {x: 8.9, y: -3.5}
+  endPos: {x: -5.2, y: -3.5}
+  moveTime: 2
