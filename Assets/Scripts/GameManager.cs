@@ -11,9 +11,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance; // 싱글톤
 
-    private NoteType _mode; // 공격모드 방어모드 정보
-    private int _nowModeCount = 0; // 현재 모드의 몇번째인지
-    private int _nowModeLength = 1; // 현재 모드 개수
+    public NoteType Mode { get; private set; }
+    public int NowModeCount { get; private set; } = 0; // 현재 모드의 몇번째인지
+    public int NowModeLength { get; private set; }= 1; // 현재 모드 개수
     
     private bool _isPlaying = false; // 플레잉중인지
     private int _noteIndex = 0; // 현재 판정할 노트 인덱스
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
         if (sheet.sheetData.notes[_noteIndex].time + 0.5f < CurrentTime)
         {
-            if (_mode == NoteType.Attack)
+            if (Mode == NoteType.Attack)
             {
                 // 공격 모드: Miss 상황이므로 강제로 빈 노트를 만들어 기록
                 CommandList.Enqueue((MoveType)Random.Range(0, 3)); // 플레이어 입력 목록에 랜덤값 추가
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     {
         var noteRealTime = note.Time - _startTime;
 
-        if (_mode == NoteType.Attack) // 공격 모드 판정
+        if (Mode == NoteType.Attack) // 공격 모드 판정
         {
             var currentInputJudge = sheet.Judge(_noteIndex, noteRealTime);
 
@@ -141,27 +141,27 @@ public class GameManager : MonoBehaviour
         onNoteDestroyed?.Invoke(_noteIndex, reason);
         
         _noteIndex++;
-        _nowModeCount++;
+        NowModeCount++;
         
-        if (_nowModeCount >= _nowModeLength)
-            ChangeMode(_mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
+        if (NowModeCount >= NowModeLength)
+            ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
     }
 
     private void ChangeMode(NoteType n)
     {
-        _mode = n;
+        Mode = n;
 
-        _nowModeCount = 0;
-        _nowModeLength = 0;
-        while (_noteIndex + _nowModeLength < sheet.sheetData.notes.Length &&
-               _mode == sheet.sheetData.notes[_noteIndex + _nowModeLength].noteType)
+        NowModeCount = 0;
+        NowModeLength = 0;
+        while (_noteIndex + NowModeLength < sheet.sheetData.notes.Length &&
+               Mode == sheet.sheetData.notes[_noteIndex + NowModeLength].noteType)
         {
-            _nowModeLength++;
+            NowModeLength++;
         }
 
-        Debug.Log("Mode" + _mode);
+        Debug.Log("Mode" + Mode);
         
-        if (_mode == NoteType.Attack)
+        if (Mode == NoteType.Attack)
         {
             CommandList.Clear();
             GenerateCounterList();

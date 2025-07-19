@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheet: {fileID: 2134529417}
+  level: 0
   onStartGame:
     m_PersistentCalls:
       m_Calls: []
@@ -230,7 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 851369241}
   m_Layer: 0
-  m_Name: bar
+  m_Name: bottom bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
