@@ -100,13 +100,14 @@ public class GameManager : MonoBehaviour
         _startTime = Time.time;
         NowHp = MaxHp;
         ChangeMode(sheets[0].sheetData.notes[0].noteType);
-        onStartGame?.Invoke();
         SoundManager.Instance.PlayBGM(0, true);
+        onStartGame?.Invoke();
     }
 
     public void EndGame()
     {
         _isPlaying = false;
+        SoundManager.Instance.StopBGM();
         onEndGame?.Invoke();
     }
 

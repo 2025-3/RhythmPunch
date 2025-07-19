@@ -14,22 +14,26 @@ public class Player : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.onNoteDestroyed.AddListener(Play);
+        GameManager.Instance.onEndGame.AddListener(() =>
+        {
+            PlayAnimation("Lose", "Win");
+        });
     }
     private void Play(int i, JudgementType type)
     {
         moveType = InputProcessor.currentInput;
 
-        //°ø°Ý¸ðµåÀÎÁö ¹æ¾î ¸ðµåÀÎÁö ÆÇ´Ü
+        //ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½
         NoteType _nodeType = GameManager.Instance.sheets[GameManager.Instance.SheetIndex].sheetData.notes[i].noteType;
 
-        //°ø°Ý¸ðµå
+        //ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½
         if (_nodeType == NoteType.Attack)
         {
-            //°ø°Ý ¼º°øÇÏ¸é {Perfect Good Bad}
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ {Perfect Good Bad}
             if (type == JudgementType.Perfect || type == JudgementType.Good )
             {
                 Debug.Log("\"Attack\", \"Hit\"");
-                PlayAnimation("Attack", "Hit"); //ÇÃ·¹ÀÌ¾î °ø°Ý, Àû ÇÇ°Ý
+                PlayAnimation("Attack", "Hit"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½Ç°ï¿½
 
                 PlayEffect(type);
 
@@ -38,36 +42,36 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Attack  Defend");
 
-                PlayAnimation("Attack", "Defend"); //ÇÃ·¹ÀÌ¾î °ø°Ý, Àû ¹æ¾î
+                PlayAnimation("Attack", "Defend"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½
 
                 PlayEffect(type);
 
             }
-            //Miss ½Ã¿¡ idle
+            //Miss ï¿½Ã¿ï¿½ idle
             else
             {
                 Debug.Log("\"Idle\", \"Idle\"");
 
-                PlayAnimation("Idle", "Idle"); //ÇÃ·¹ÀÌ¾î idle, Àû idle
+                PlayAnimation("Idle", "Idle"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ idle, ï¿½ï¿½ idle
 
                 PlayEffect(type);
             }
         }
 
-        //¹æ¾î ¸ðµåÀÌ¸é
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
         else
         {
-            //¹æ¾î ¼º°øÇÏ¸é {Perfect Good}
+            //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ {Perfect Good}
             if (type == JudgementType.Perfect || type == JudgementType.Good)
             {
-                PlayAnimation("Defend", "Attack"); //ÇÃ·¹ÀÌ¾î ¹æ¾î, Àû °ø°Ý
+                PlayAnimation("Defend", "Attack"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                 PlayEffect(type);
 
             }
             else
             {
-                PlayAnimation("Hit", "Attck"); //ÇÃ·¹ÀÌ¾î ÇÇ°Ý, Àû °ø°Ý
+                PlayAnimation("Hit", "Attck"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ç°ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                 PlayEffect(type);
 
@@ -80,13 +84,13 @@ public class Player : MonoBehaviour
     {
         /*
          * State =>
-         *  Attack 1:»ó´Ü 2:Áß´Ü 3ÇÏ´Ü
+         *  Attack 1:ï¿½ï¿½ï¿½ 2:ï¿½ß´ï¿½ 3ï¿½Ï´ï¿½
          *  Idle 0
          *  Hit -1
          *  Defend -2
          */
 
-        //ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ÞÀÌ¼Ç
+        //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
         if(player == "Attack")
         {
             switch (moveType)
@@ -119,7 +123,7 @@ public class Player : MonoBehaviour
 
         }
 
-        //Àû ¾Ö´Ï¸ÞÀÌ¼Ç
+        //ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
         if (enemy == "Attack")
         {
             switch (moveType)

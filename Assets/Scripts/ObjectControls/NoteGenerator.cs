@@ -42,6 +42,7 @@ namespace ObjectControls
             moveTime = sheets[0].sheetData.reachingTime;
             
             GameManager.Instance.onStartGame.AddListener(StartGenerate);
+            GameManager.Instance.onEndGame.AddListener(EndGenerate);
             GameManager.Instance.onNoteDestroyed.AddListener((_, reason) => { DestroyNote(reason); });
             GameManager.Instance.onComboAdded.AddListener(ChangeGuardNote);
 
@@ -82,6 +83,22 @@ namespace ObjectControls
         {
             _isStart = true;
             _startTime = Time.time;
+        }
+
+        private void EndGenerate()
+        {
+            _isStart = false;
+            while (_noteQueue.Count > 0)
+            {
+                var go = _noteQueue.Dequeue().gameObject;
+                Destroy(go);
+            }
+
+            while (_moveNoteQueue.Count > 0)
+            {
+                var go = _moveNoteQueue.Dequeue();
+                Destroy(go);
+            }
         }
         
         private void GenerateNote()
