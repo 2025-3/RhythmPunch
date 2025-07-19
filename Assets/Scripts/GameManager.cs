@@ -40,8 +40,19 @@ public class GameManager : MonoBehaviour
     public UnityEvent onCounterAttacked;
 
     public int MaxHp { get; private set; } = 3;
-    public int NowHp { get; private set; }
-    
+
+    private int _nowHp;
+    public int NowHp
+    {
+        get => _nowHp;
+        private set
+        {
+            _nowHp = Math.Clamp(value, 0, MaxHp);
+            if (_nowHp <= 0)
+                EndGame();
+        }
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -81,16 +92,6 @@ public class GameManager : MonoBehaviour
     {
         if (_isPlaying)
         {
-            if (NowHp <= 0)
-            {
-                EndGame();
-            }
-            
-            if (_noteIndex >= sheets[SheetIndex].sheetData.notes.Length)
-            {
-                ChangeSheet();
-            }
-            
             MissJudge(); // 현재 노트의 판정 유효 시간이 지났다면 (Miss 처리)
         }
     }
@@ -181,9 +182,6 @@ public class GameManager : MonoBehaviour
     {
         onNoteDestroyed?.Invoke(_noteIndex, reason);
 
-        if (reason is JudgementType.Bad or JudgementType.Fail or JudgementType.Miss)
-            NowHp--;
-        
         if (reason is JudgementType.Perfect or JudgementType.Great or JudgementType.Good)
         {
             ComboCount++;
@@ -191,14 +189,20 @@ public class GameManager : MonoBehaviour
         else
         {
             ComboCount = 0;
+            NowHp--;
         }
         
         _noteIndex++;
-        NowModeCount++;
-        
-        if (NowModeCount >= NowModeLength)
-            ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
-        
+        if (_noteIndex >= sheets[SheetIndex].sheetData.notes.Length)
+        {
+            ChangeSheet();
+        }
+        else
+        {
+            NowModeCount++;
+            if (NowModeCount >= NowModeLength)
+                ChangeMode(Mode == NoteType.Attack ? NoteType.Guard : NoteType.Attack);
+        }
         
         Debug.Log($"Sheet {SheetIndex} {_noteIndex}");
     }
@@ -219,8 +223,9 @@ public class GameManager : MonoBehaviour
         {
             CommandList.Clear();
 
-            foreach (var (_, _, isUsed) in CounterList)
+            foreach (var (a,b, isUsed) in CounterList)
             {
+                Debug.Log($"{a} {b} {isUsed}");
                 if (!isUsed)
                 {
                     NowHp--;
@@ -240,6 +245,7 @@ public class GameManager : MonoBehaviour
         foreach (var item in counterList)
         {
             CounterList.Add((item, (MoveType)Random.Range(0, 3), false));
+            Debug.Log($"{CounterList[^1].Item1} {CounterList[^1].Item2} {CounterList[^1].Item3}");
         }
 
         onCounterChanged?.Invoke();
