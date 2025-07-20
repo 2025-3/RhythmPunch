@@ -5326,18 +5326,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 2295698215815913886, guid: 2839965ea5ab6814f81ffc6e782fa4c1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527710097577856705, guid: 2839965ea5ab6814f81ffc6e782fa4c1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6272735957619339049, guid: 2839965ea5ab6814f81ffc6e782fa4c1, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Stage2
-      objectReference: {fileID: 0}
     - target: {fileID: 9027242231348525333, guid: 2839965ea5ab6814f81ffc6e782fa4c1, type: 3}
       propertyPath: tooltip
       value: 
