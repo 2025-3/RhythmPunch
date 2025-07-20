@@ -1,0 +1,29 @@
+{
+  "level": 1,
+  "reachingTime": 1.5,
+  "notes":
+  [
+   
+   
+    { "time": 50, "noteType": 0},
+    
+    { "time": 50.5, "noteType": 0 },
+    { "time": 50.8, "noteType": 0 },
+    
+    { "time": 51.6, "noteType": 0 },
+   
+    { "time": 52.5, "noteType": 0 },
+   
+    { "time": 53.8, "noteType": 1 },
+    
+    { "time": 55, "noteType": 1 },
+    
+    { "time": 56.3, "noteType": 1 },
+   
+    { "time": 57.6, "noteType": 1 },
+    
+    { "time": 58.4, "noteType": 1 }
+    
+    
+  ]
+}

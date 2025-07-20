@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6435783287445321595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9078673513994096328}
+  - component: {fileID: 1414454880502035224}
+  m_Layer: 0
+  m_Name: NoteGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9078673513994096328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435783287445321595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1414454880502035224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435783287445321595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae178e297a64c589728cb74eaa06d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  note: {fileID: 5734182513395483182, guid: 8ccc2e1b94e5be8468ba68a33addc04f, type: 3}
+  guardSprite: {fileID: 21300000, guid: 7739c48e73c7e5947ad3f7347ff77ab2, type: 3}
+  highSprite: {fileID: 21300000, guid: 3740f6e55dc131b4589753bcbec71c74, type: 3}
+  middleSprite: {fileID: 21300000, guid: ac9d67174c6d2424cb0e03b953ad658b, type: 3}
+  lowSprite: {fileID: 21300000, guid: fa5bd297207be9a4b854a1675aa213fb, type: 3}
+  perfectParticle: {fileID: 3417252716908524132, guid: 3b3f4e245c6e5374687da252d53b1236, type: 3}
+  goodParticle: {fileID: 2711753205424103446, guid: 9a63e91ca20f6d5428f708ea5da8b1a5, type: 3}
+  missParticle: {fileID: 1551201292834075006, guid: 61cdd92094b2fc04393e3f562be29578, type: 3}
+  startPos: {x: 8.9, y: -3.5}
+  endPos: {x: -5.2, y: -3.5}
+  z: 3
+  moveTime: 2
