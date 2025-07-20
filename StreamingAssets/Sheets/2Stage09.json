@@ -1,0 +1,51 @@
+{
+  "level": 2,
+  "reachingTime": 2.0,
+  "notes":
+  [
+   
+   
+
+    { "time": 63.1, "noteType": 0 },
+    { "time": 63.8, "noteType": 0 },
+    { "time": 64.2, "noteType": 0 },
+    { "time": 65.1, "noteType": 0 },
+    { "time": 65.9, "noteType": 1 },
+    { "time": 66.1, "noteType": 1 },
+    { "time": 66.3, "noteType": 1 },
+    { "time": 66.5, "noteType": 1 },
+
+    { "time": 66.8, "noteType": 0 },
+    { "time": 67.5, "noteType": 0 },
+    { "time": 68, "noteType": 0 },
+    { "time": 68.8, "noteType": 0 },
+    { "time": 69.6, "noteType": 0 },
+    { "time": 69.8, "noteType": 0 },
+    { "time": 70.1, "noteType": 1 },
+    { "time": 70.3, "noteType": 1 },
+    { "time": 70.6, "noteType": 1 },
+    { "time": 71.3, "noteType": 1 },
+    { "time": 71.7, "noteType": 1 },
+    { "time": 72.6, "noteType": 1 },
+
+    { "time": 73, "noteType": 0 },
+    { "time": 73.3, "noteType": 0 },
+    { "time": 73.6, "noteType": 0 },
+    { "time": 73.8, "noteType": 0 },
+    { "time": 74.1, "noteType": 1 },
+    { "time": 74.4, "noteType": 1 },
+    { "time": 75.5, "noteType": 1 },
+    { "time": 76.4, "noteType": 1 },
+
+    { "time": 77.1, "noteType": 0 },
+    { "time": 77.3, "noteType": 0 },
+    { "time": 77.6, "noteType": 0 },
+    { "time": 77.8, "noteType": 0 },
+    { "time": 78, "noteType": 0 },
+    { "time": 78.7, "noteType": 1 },
+    { "time": 79.2, "noteType": 1 },
+    { "time": 80.1, "noteType": 1 },
+    { "time": 80.5, "noteType": 1 },
+    { "time": 80.8, "noteType": 1 }
+  ]
+}
