@@ -309,6 +309,7 @@ MonoBehaviour:
   sfxSource: {fileID: 2726763338735532714}
   bgmClips:
   - {fileID: 8300000, guid: 2f6d683af49e5d04481e84ec0e75aef3, type: 3}
+  - {fileID: 8300000, guid: 85690c828a5e3334d9345bd418d21306, type: 3}
   noteClips:
   - {fileID: 8300000, guid: 16b51e921ce3f3c4d89b354ce65bbcd2, type: 3}
   - {fileID: 8300000, guid: 16b51e921ce3f3c4d89b354ce65bbcd2, type: 3}

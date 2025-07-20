@@ -40,6 +40,11 @@ public class GameManager : MonoBehaviour
     public UnityEvent onCounterChanged;
     public UnityEvent onCounterAttacked;
 
+    public int bgmIndex = 0;
+    
+    public GameObject winPanel;
+    public GameObject losePanel;
+    
     public int MaxHp { get; private set; } = 3;
 
     private int _nowHp;
@@ -95,7 +100,7 @@ public class GameManager : MonoBehaviour
         _startTime = Time.time;
         NowHp = MaxHp;
         ChangeMode(sheets[0].sheetData.notes[0].noteType);
-        SoundManager.Instance.PlayBGM(0, true);
+        SoundManager.Instance.PlayBGM(bgmIndex, true);
         onStartGame?.Invoke();
     }
 
@@ -104,9 +109,15 @@ public class GameManager : MonoBehaviour
         _isPlaying = false;
         SoundManager.Instance.StopBGM();
         if (isWin)
+        {
+            winPanel.SetActive(true);
             onWinGame?.Invoke();
+        }
         else
+        {
+            losePanel.SetActive(true);
             onEndGame?.Invoke();
+        }
     }
 
     private void MissJudge()

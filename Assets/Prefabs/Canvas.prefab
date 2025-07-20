@@ -341,7 +341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1328173754950682666
 RectTransform:
   m_ObjectHideFlags: 0
@@ -516,7 +516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8547436728595239234
 RectTransform:
   m_ObjectHideFlags: 0
@@ -900,7 +900,7 @@ RectTransform:
   m_GameObject: {fileID: 3989105846312425545}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3670986435152320230}
@@ -1002,7 +1002,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Stage2
+          m_StringArgument: Stage1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &4918968822589723411
@@ -1236,8 +1236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
-  winPanel: {fileID: 2295698215815913886}
-  losePanel: {fileID: 2527710097577856705}
 --- !u!1 &5123139207933047284
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,7 +1798,7 @@ RectTransform:
   m_GameObject: {fileID: 6278365913103883440}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4704238317564493120}

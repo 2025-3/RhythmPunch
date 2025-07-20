@@ -1,0 +1,97 @@
+{
+  "level": 0,
+  "reachingTime": 2.0,
+  "notes":
+  [
+      {
+      "time": 15.09,
+      "noteType": 0
+    },
+    {
+      "time": 15.97,
+      "noteType": 0
+    },
+    {
+      "time": 16.91,
+      "noteType": 0
+    },
+    {
+      "time": 17.83,
+      "noteType": 0
+    },
+    {
+      "time": 18.74,
+      "noteType": 0
+    },
+    {
+      "time": 19.69,
+      "noteType": 0
+    },
+    {
+      "time": 20.67,
+      "noteType": 0
+    },
+    {
+      "time": 21.59,
+      "noteType": 0
+    },
+    {
+      "time": 22.52,
+      "noteType": 0
+    },
+    {
+      "time": 23.46,
+      "noteType": 0
+    },
+    {
+      "time": 24.38,
+      "noteType": 0
+    },
+    {
+      "time": 25.27,
+      "noteType": 1
+    },
+    {
+      "time": 26.21,
+      "noteType": 1
+    },
+    {
+      "time": 27.19,
+      "noteType": 1
+    },
+    {
+      "time": 28.14,
+      "noteType": 1
+    },
+    {
+      "time": 29.07,
+      "noteType": 1
+    },
+    {
+      "time": 30.0,
+      "noteType": 1
+    },
+    {
+      "time": 30.89,
+      "noteType": 1
+    },
+    {
+      "time": 31.9,
+      "noteType": 1
+    },
+    {
+      "time": 32.76,
+      "noteType": 1
+    },
+    {
+      "time": 33.73,
+      "noteType": 1
+    },
+    {
+      "time": 34.7,
+      "noteType": 1
+    }
+    
+    
+  ]
+}

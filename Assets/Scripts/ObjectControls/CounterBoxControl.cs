@@ -63,6 +63,7 @@ public class CounterBoxControl : MonoBehaviour
         }
         
         gameObject.SetActive(true);
+        StartCoroutine(PlayAnimation());
 
         int length = directions.Count + 1;
 
@@ -104,7 +105,6 @@ public class CounterBoxControl : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(perdiod);
-            
             
             transform.position += direction * distance * (index == 2 ? Vector3.left : Vector3.up);
             direction = -direction;
