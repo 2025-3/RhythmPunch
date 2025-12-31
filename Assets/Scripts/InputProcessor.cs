@@ -61,7 +61,7 @@ public class InputProcessor : MonoBehaviour
             // 노트 정보 저장
             var note = new NoteForJudge
             {
-                Time = Time.time,
+                Time = AudioSettings.dspTime,
                 Type = MoveType.High,
                 Directions = _directions.ToList(), // 복사뜨는거 맘에 안듬
             };
@@ -81,7 +81,7 @@ public class InputProcessor : MonoBehaviour
             // 노트 정보 저장
             var note = new NoteForJudge
             {
-                Time = Time.time,
+                Time = AudioSettings.dspTime,
                 Type = MoveType.Middle,
                 Directions = _directions.ToList(),
             };
@@ -100,7 +100,7 @@ public class InputProcessor : MonoBehaviour
             // 노트 정보 저장
             var note = new NoteForJudge
             {
-                Time = Time.time,
+                Time = AudioSettings.dspTime,
                 Type = MoveType.Low,
                 Directions = _directions.ToList(),
             };

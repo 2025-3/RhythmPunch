@@ -20,7 +20,7 @@ namespace ObjectControls
         public Vector2 startPos;
         public Vector2 endPos;
         public float z;
-        public float moveTime;
+        public double moveTime;
 
         private readonly Queue<NoteControl> _noteQueue = new();
         private readonly Queue<GameObject> _moveNoteQueue = new();
@@ -30,8 +30,8 @@ namespace ObjectControls
 
         private bool _isStart = false;
         private int _noteIndex = 0;
-        private float _startTime;
-        private float CurrentTime => Time.time - _startTime;
+        private double _startTime;
+        private double CurrentTime => AudioSettings.dspTime - _startTime;
 
         private List<Sheet> sheets => GameManager.Instance.sheets;
         private int _sheetIndex = 0;
@@ -92,7 +92,7 @@ namespace ObjectControls
         private void StartGenerate()
         {
             _isStart = true;
-            _startTime = Time.time;
+            _startTime = AudioSettings.dspTime;
         }
 
         private void EndGenerate()

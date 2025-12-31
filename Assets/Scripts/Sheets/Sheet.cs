@@ -58,12 +58,25 @@ namespace Sheets
             sheetData = JsonUtility.FromJson<SheetData>(json);
             
             Assert.IsNotNull(sheetData, "json 파싱에 실패했습니다.");
+
+            ForSync();
             
             yield break;
         }
 
+        private void ForSync()
+        {
+            Assert.IsNotNull(sheetData, "sheetData가 있어야합니다.");
+            
+            const double epsilonForSync = -0.15;
+            foreach (var note in sheetData.notes)
+            {
+                note.time += epsilonForSync;
+            }
+        }
+
         // 판정; 숫자는 임시임
-        public JudgementType Judge(int index, float time)
+        public JudgementType Judge(int index, double time)
         {
             var needTime = sheetData.notes[index].time;
             var timeDiff = Math.Abs(needTime - time);

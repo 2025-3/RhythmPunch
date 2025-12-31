@@ -18,7 +18,7 @@ public enum DirectionType
 
 public class NoteForJudge
 {
-    public float Time;
+    public double Time;
     public MoveType Type;
     public List<DirectionType> Directions;
 }

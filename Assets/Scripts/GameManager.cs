@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     
     private bool _isPlaying = false; // 플레잉중인지
     private int _noteIndex = 0; // 현재 판정할 노트 인덱스
-    private float _startTime; // 시작된 타임스탬프
-    private float CurrentTime => Time.time - _startTime; // 타임스탬프 기반 시작된지 몇초지났는지
+    private double _startTime; // 시작된 타임스탬프
+    private double CurrentTime => AudioSettings.dspTime - _startTime; // 타임스탬프 기반 시작된지 몇초지났는지
     
     public List<Sheet> sheets; // 악보정보
     public int SheetIndex { get; private set; } = 0;
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         _isPlaying = true;
-        _startTime = Time.time;
+        _startTime = AudioSettings.dspTime;
         NowHp = MaxHp;
         ChangeMode(sheets[0].sheetData.notes[0].noteType);
         SoundManager.Instance.PlayBGM(bgmIndex, true);

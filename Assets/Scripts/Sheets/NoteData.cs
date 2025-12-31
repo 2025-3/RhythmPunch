@@ -6,7 +6,7 @@ namespace Sheets
     [Serializable]
     public class NoteData
     {
-        public float time;
+        public double time;
         public NoteType noteType;
     }
 }

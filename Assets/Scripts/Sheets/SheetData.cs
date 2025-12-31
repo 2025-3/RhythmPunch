@@ -7,7 +7,7 @@ namespace Sheets
     public class SheetData
     {
         public int level;
-        public float reachingTime;
+        public double reachingTime;
         public NoteData[] notes;
     }
 }
