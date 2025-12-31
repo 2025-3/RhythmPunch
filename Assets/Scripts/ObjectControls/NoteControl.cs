@@ -11,11 +11,10 @@ namespace ObjectControls
 
         private Vector2 Direction => (endPos - startPos).normalized;
         private double Speed => (endPos - startPos).magnitude / moveTime;
-        private double _spawnTime;
+        public double spawnTime;
         private double _smoothTime;
         private const double SmoothFactor = 0.5;
-
-
+        
         private bool _isMove = false;
 
         private void Awake()
@@ -36,14 +35,13 @@ namespace ObjectControls
             var error = realTime - _smoothTime;
             _smoothTime += Time.deltaTime * (1.0 + error * SmoothFactor);
 
-            transform.position = startPos + (float)(Speed * (_smoothTime - _spawnTime)) * Direction;
+            transform.position = startPos + (float)(Speed * (_smoothTime - spawnTime)) * Direction;
         }
 
         public void StartMove()
         {
             _isMove = true;
-            _spawnTime = AudioSettings.dspTime;
-            _smoothTime = _spawnTime;
+            _smoothTime = spawnTime;
         }
     }
 }

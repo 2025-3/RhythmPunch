@@ -118,6 +118,7 @@ namespace ObjectControls
             newNote.startPos = startPos;
             newNote.endPos = endPos;
             newNote.moveTime = moveTime;
+            newNote.spawnTime = GameManager.Instance.StartTime + sheets[_sheetIndex].sheetData.notes[_noteIndex].time - moveTime;
 
             newNote.gameObject.SetActive(true);
             newNote.StartMove();
