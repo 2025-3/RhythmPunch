@@ -68,6 +68,8 @@ public class InputProcessor : MonoBehaviour
 
             // 게임매니저에서 판정
             GameManager.Instance.Judge(note);
+            
+            _directions.Clear();
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -85,6 +87,8 @@ public class InputProcessor : MonoBehaviour
             };
             
             GameManager.Instance.Judge(note);
+            
+            _directions.Clear();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -100,8 +104,10 @@ public class InputProcessor : MonoBehaviour
                 Type = MoveType.Low,
                 Directions = _directions.ToList(),
             };
-
+            
             GameManager.Instance.Judge(note);
+            
+            _directions.Clear();
         }
     }
 
