@@ -2346,7 +2346,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Click Anywhere To Start
+  m_text: Loading...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa83b24e4d563240925ae5c85e08643, type: 2}
   m_sharedMaterial: {fileID: -7055854107370105975, guid: 0fa83b24e4d563240925ae5c85e08643, type: 2}

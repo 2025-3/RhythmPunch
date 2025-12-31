@@ -254,7 +254,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 3stage03
+  sheetName: 3Stage03
 --- !u!1 &81445147
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,7 +991,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 3stage02
+  sheetName: 3Stage02
 --- !u!1 &290412801
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,6 +1922,9 @@ MonoBehaviour:
   - {fileID: 52627350}
   - {fileID: 1457437298}
   level: 1
+  onCompleteLoadSheet:
+    m_PersistentCalls:
+      m_Calls: []
   onStartGame:
     m_PersistentCalls:
       m_Calls: []
@@ -3188,7 +3191,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 3stage01
+  sheetName: 3Stage01
 --- !u!1 &1409908397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3542,7 +3545,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 3stage04
+  sheetName: 3Stage04
 --- !u!1 &1486396409
 GameObject:
   m_ObjectHideFlags: 0

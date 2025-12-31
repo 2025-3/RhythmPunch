@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Audio; // �߰�
+using UnityEngine.Audio;
+using UnityEngine.Events; // �߰�
 
 
 /*
@@ -36,7 +37,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("SFX Clips")]
     public List<AudioClip> sfxClips;
-
+    
     private void Awake()
     {
         if (Instance != null)
@@ -49,6 +50,10 @@ public class SoundManager : MonoBehaviour
     }
 
     private void Start()
+    {
+    }
+
+    public void AddGameManagerEvents()
     {
         GameManager.Instance.onNoteDestroyed.AddListener((_, judge) =>
         {

@@ -1,16 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-public class TooltipCloseButtonControl : MonoBehaviour
+namespace ObjectControls
 {
-    public GameObject tooltip;
-    
-    public void OnClick()
+    public class TooltipCloseButtonControl : MonoBehaviour
     {
-        tooltip.SetActive(false);
-        gameObject.SetActive(false);
+        public GameObject tooltip;
         
-        GameManager.Instance.StartGame();
+        private TextMeshProUGUI _text;
+        private bool _isSheetLoaded = false;
+
+        private void Awake()
+        {
+            _text = GetComponentInChildren<TextMeshProUGUI>();
+            
+            Assert.IsNotNull(_text);
+        }
+        
+        private void Start()
+        {
+            GameManager.Instance.onCompleteLoadSheet.AddListener(SetClickable);
+        }
+
+        private void SetClickable()
+        {
+            GameManager.Instance.onCompleteLoadSheet.RemoveListener(SetClickable);
+            
+            _text.text = "Click Anywhere To Start";
+            _isSheetLoaded = true;
+        }
+        
+        public void OnClick()
+        {
+            if (!_isSheetLoaded)
+                return;
+            
+            tooltip.SetActive(false);
+            gameObject.SetActive(false);
+        
+            GameManager.Instance.StartGame();
+        }
     }
 }

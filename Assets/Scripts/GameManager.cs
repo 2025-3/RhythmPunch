@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sheets;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 using CounterList = System.Collections.Generic.List<(System.Collections.Generic.List<DirectionType> directions, MoveType moveType, bool isUsed)>;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     public int ComboCount { get; private set; } = 0;
     
+    public UnityEvent onCompleteLoadSheet;
     public UnityEvent onStartGame; // 게임 시작 시 발생
     public UnityEvent onEndGame; // 게임 종료 시 발생
     public UnityEvent onWinGame;
@@ -71,9 +73,17 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    private void Start()
+    private IEnumerator Start()
     {
+        foreach (var sheet in sheets)
+            yield return sheet.LoadSheet();
+        
+        onCompleteLoadSheet?.Invoke();
+        
         level = sheets[0].sheetData.level;
+            
+        Assert.IsTrue(level is >= 0 and <= 6, "레벨이 비정상입니다.");
+        
         _counterGenerator = level switch
         {
             0 => new Stage0(),
@@ -84,6 +94,8 @@ public class GameManager : MonoBehaviour
             5 => new Stage5(),
             6 => new Stage6()
         };
+        
+        SoundManager.Instance.AddGameManagerEvents();
     }
 
     private void Update()

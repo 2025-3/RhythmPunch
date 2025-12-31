@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Networking;
 
 // 악보 래핑 클래스
 namespace Sheets
@@ -9,19 +12,54 @@ namespace Sheets
     {
         public SheetData sheetData; // 악보 데이터
         public string sheetName; // 악보 파일 이름; 오브젝트에서 지정 필요
-    
-        // Awake에서 악보 로드
-        private void Awake()
+
+        private string SheetPath
         {
-            LoadSheet();
+            get
+            {
+#if UNITY_EDITOR || UNITY_STANDALONE
+                return Path.Combine(Application.streamingAssetsPath, $"Sheets/{sheetName}.json");
+#elif UNITY_WEBGL
+                return Path.Combine(Application.streamingAssetsPath, $"Sheets/{sheetName}.json?t={System.DateTime.Now.Ticks}");
+#else
+                Assert.IsTrue(false, "지원되지 않는 플랫폼입니다.");
+#endif
+            }
         }
 
-        // 악보 로드 메소드
-        private void LoadSheet()
+        private void Awake()
         {
-            var path = Path.Combine(Application.streamingAssetsPath, $"Sheets/{sheetName}.json");
-            var json = File.ReadAllText(path);
+        }
+
+        private void Start()
+        {
+        }
+
+        public IEnumerator LoadSheet()
+        {
+            string json = null;
+            
+#if UNITY_EDITOR || UNITY_STANDALONE
+            Assert.IsTrue(File.Exists(SheetPath), "경로에 파일이 존재하지 않습니다.");
+            
+            json = File.ReadAllText(SheetPath);
+#elif UNITY_WEBGL
+            using var req = UnityWebRequest.Get(SheetPath);
+            yield return req.SendWebRequest();
+            
+            Assert.IsTrue(req.result == UnityWebRequest.Result.Success, "WebRequest가 실패했습니다.");
+            
+            json = req.downloadHandler.text;
+#else
+            Assert.IsTrue(false, "지원되지 않는 플랫폼입니다.");            
+#endif
+            Assert.IsFalse(string.IsNullOrEmpty(json), "json을 제대로 가져오지 못했습니다.");
+            
             sheetData = JsonUtility.FromJson<SheetData>(json);
+            
+            Assert.IsNotNull(sheetData, "json 파싱에 실패했습니다.");
+            
+            yield break;
         }
 
         // 판정; 숫자는 임시임

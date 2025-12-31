@@ -254,7 +254,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage03
+  sheetName: 1Stage03
 --- !u!1 &80555272
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +303,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage05
+  sheetName: 1Stage05
 --- !u!1 &81445147
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,7 +983,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage10
+  sheetName: 1Stage10
 --- !u!1001 &242753187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1089,7 +1089,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage02
+  sheetName: 1Stage02
 --- !u!1 &290412801
 GameObject:
   m_ObjectHideFlags: 0
@@ -2034,6 +2034,9 @@ MonoBehaviour:
   - {fileID: 1339807185}
   - {fileID: 1843688842}
   level: 1
+  onCompleteLoadSheet:
+    m_PersistentCalls:
+      m_Calls: []
   onStartGame:
     m_PersistentCalls:
       m_Calls: []
@@ -2867,7 +2870,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage09
+  sheetName: 1Stage09
 --- !u!1 &1086135831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2916,7 +2919,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage11
+  sheetName: 1Stage11
 --- !u!1 &1116873212
 GameObject:
   m_ObjectHideFlags: 0
@@ -3319,7 +3322,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage12
+  sheetName: 1Stage12
 --- !u!1 &1362128439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,7 +3371,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage08
+  sheetName: 1Stage08
 --- !u!1 &1369431638
 GameObject:
   m_ObjectHideFlags: 0
@@ -3501,7 +3504,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage01
+  sheetName: 1Stage01
 --- !u!1 &1409908397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3855,7 +3858,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage04
+  sheetName: 1Stage04
 --- !u!1 &1486396409
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,7 +4192,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage06
+  sheetName: 1Stage06
 --- !u!1 &1720835365
 GameObject:
   m_ObjectHideFlags: 0
@@ -4574,7 +4577,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage13
+  sheetName: 1Stage13
 --- !u!1 &1877544458
 GameObject:
   m_ObjectHideFlags: 0
@@ -5233,7 +5236,7 @@ MonoBehaviour:
     level: 0
     reachingTime: 0
     notes: []
-  sheetName: 1stage07
+  sheetName: 1Stage07
 --- !u!1001 &3718696927540061860
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -43,26 +43,32 @@ namespace ObjectControls
 
         private void Start()
         {
-            moveTime = sheets[0].sheetData.reachingTime;
-            
+            GameManager.Instance.onCompleteLoadSheet.AddListener(Init);
             GameManager.Instance.onStartGame.AddListener(StartGenerate);
             GameManager.Instance.onEndGame.AddListener(EndGenerate);
             GameManager.Instance.onNoteDestroyed.AddListener((_, reason) => { DestroyNote(reason); });
             GameManager.Instance.onComboAdded.AddListener(ChangeGuardNote);
+        }
 
+        private void Init()
+        {
+            GameManager.Instance.onCompleteLoadSheet.RemoveListener(Init);
+            
+            moveTime = sheets[0].sheetData.reachingTime;
+            
             foreach (var sheet in sheets)
             {
-                for (int i = 0; i < sheet.sheetData.notes.Length; i++)
+                foreach (var noteData in sheet.sheetData.notes)
                 {
                     var initPos = new Vector3(startPos.x, startPos.y, z);
                     var go = Instantiate(note, initPos, Quaternion.identity);
                     go.gameObject.SetActive(false);
                     _noteQueue.Enqueue(go);
-                    if (sheet.sheetData.notes[i].noteType == NoteType.Guard)
-                    {
-                        go.GetComponent<SpriteRenderer>().sprite = guardSprite;
-                        _guardNotes.Enqueue(go.gameObject);
-                    }
+                    if (noteData.noteType != NoteType.Guard)
+                        continue;
+                    
+                    go.GetComponent<SpriteRenderer>().sprite = guardSprite;
+                    _guardNotes.Enqueue(go.gameObject);
                 }
             }
         }
